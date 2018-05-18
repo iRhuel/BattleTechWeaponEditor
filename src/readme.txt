@@ -37,6 +37,8 @@ NOTES
 
 - as this is a beta release, it's encouraged to create your own manual backup of "/weapon" until you feel confident in the backup and restore functionality. Just in case.
 
+- works on mod weapons, so long as they follow the same json structure as the vanilla weapons. Just point the app to the folder containing the mod weapons.
+
 - currently does not handle parameters for melee attacks.
 
 - this app hasn't been tested on any platform but Windows.
