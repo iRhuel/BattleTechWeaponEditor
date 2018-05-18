@@ -6,13 +6,15 @@ It also includes functionality to manually generate a backup  file of the jsons 
 
 Lastly, it displays and updates second-order statistics (like damage/ton ratios) to help users make more informed corrections. 
 
-As this is a beta release, please consider also creating your own backup of said files in a safe location... just in case.
+As this is a beta release, please consider also creating your own backup of said files in a safe location... just in case. Please message me if/when you run into any bugs or unexpected behavior. 
 
 Before usage, please read the [readme.txt](https://github.com/iRhuel/BattleTechWeaponEditor/blob/master/src/readme.txt) contained in the package, or click "Help->About" in the app menu bar for more specific usage notes. 
 
 ## Download
 
-Soon
+[Latest release](https://github.com/iRhuel/BattleTechWeaponEditor/releases)
+
+Unzip to a location of your choice, and run the .jar file with JRE (must have JRE installed). If it doesn't automatically do so, right click on .jar, click 'open with...', and select 'Java(TM) Platform SE Binary'.
 
 ### Prerequisites
 
@@ -33,6 +35,8 @@ Suggestions, critiques, feature requests are more than welcome.
 ## Author(s)
 
 * **Phil Truong** aka **iRhuel**
+    * Discord: iRhuel#5923
+    * Reddit: reddit.com/u/iRhuel
 
 ## License
 
