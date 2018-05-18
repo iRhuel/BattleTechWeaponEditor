@@ -18,7 +18,7 @@ Unzip to a location of your choice, and run the .jar file with JRE (must have JR
 
 ### Prerequisites
 
-You will need at least [Java 8 JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) installed (Java 9 was used to make this app). A self-contained application package is in the works. 
+You will need at least [Java 10 JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre10-downloads-4417026.html) installed (support for Java 9, which was used to develop this app, has ended). A self-contained application package is in the works. 
 
 ## TODO
 
