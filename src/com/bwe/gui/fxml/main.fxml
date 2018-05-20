@@ -41,24 +41,34 @@
                   prefWidth="150.0" text="Stock Only" textAlignment="CENTER"/>
         <ListView id="filterList" fx:id="filterListBox" prefHeight="200.0" prefWidth="150.0" VBox.vgrow="ALWAYS"/>
     </VBox>
-    <TableView fx:id="filterTable" editable="true" prefHeight="576.0" prefWidth="650.0" tableMenuButtonVisible="true"
+    <TableView fx:id="displayTable" editable="true" prefHeight="576.0" prefWidth="650.0" tableMenuButtonVisible="true"
                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0"
                AnchorPane.topAnchor="24.0">
         <columns>
-            <TableColumn prefWidth="100.0" text="Name" fx:id="colName"/>
-            <TableColumn prefWidth="100.0" text="Manufacturer" fx:id="colMnf"/>
-            <TableColumn onEditCommit="#intCellCommit" prefWidth="50.0" text="Dmg" fx:id="colDmg"/>
-            <TableColumn onEditCommit="#intCellCommit" prefWidth="50.0" text="Stb" fx:id="colStab"/>
-            <TableColumn onEditCommit="#intCellCommit" prefWidth="50.0" text="AccMod" fx:id="colAcc"/>
-            <TableColumn onEditCommit="#dlbCellCommit" prefWidth="50.0" text="Crit" fx:id="colCrit"/>
-            <TableColumn onEditCommit="#intCellCommit" prefWidth="50.0" text="Heat" fx:id="colHeat"/>
-            <TableColumn onEditCommit="#dlbCellCommit" prefWidth="50.0" text="Tons" fx:id="colTons"/>
-            <TableColumn onEditCommit="#bonusACellCommit" prefWidth="100.0" text="BonusA" fx:id="colBonusA"/>
-            <TableColumn onEditCommit="#bonusBCellCommit" prefWidth="100.0" text="BonusB" fx:id="colBOnusB"/>
-            <TableColumn prefWidth="75.0" text="Dmg/Ton" fx:id="colDmgPerTon"/>
-            <TableColumn prefWidth="75.0" text="Dmg/Heat" fx:id="colDmgPerHeat"/>
-            <TableColumn prefWidth="75.0" text="Stab/Ton" fx:id="colStabPerTon"/>
-            <TableColumn prefWidth="75.0" text="Stab/Heat" fx:id="colStabPerHeat"/>
+            <TableColumn onEditCommit="#nameCellCommit" prefWidth="90.0" text="Name" fx:id="colName"/>
+            <TableColumn onEditCommit="#mfrCellCommit" prefWidth="100.0" text="Manufacturer" fx:id="colMnf"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="Dmg" fx:id="colDmg"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="Stb" fx:id="colStab"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="HDmg" fx:id="colHeatDmg"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="AccMod" fx:id="colAcc"/>
+            <TableColumn onEditCommit="#doubleBatchEdit" text="Crit" fx:id="colCrit"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="Heat" fx:id="colHeat"/>
+            <TableColumn onEditCommit="#doubleBatchEdit" text="Tons" fx:id="colTons"/>
+            <TableColumn onEditCommit="#bonusACellCommit" prefWidth="85.0" text="BonusA" fx:id="colBonusA"/>
+            <TableColumn onEditCommit="#bonusBCellCommit" prefWidth="85.0" text="BonusB" fx:id="colBOnusB"/>
+            <TableColumn prefWidth="60.0" text="Dmg/Ton" fx:id="colDmgPerTon"/>
+            <TableColumn prefWidth="60.0" text="Dmg/Ht" fx:id="colDmgPerHeat"/>
+            <TableColumn prefWidth="60.0" text="Stb/Ton" fx:id="colStabPerTon"/>
+            <TableColumn prefWidth="60.0" text="Stb/Ht" fx:id="colStabPerHeat"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="45.0" text="MinRange" fx:id="colMinRange"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="45.0" text="MaxRange" fx:id="colMaxRange"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="RefireMod" fx:id="colRefireMod"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="ShotsWhenFired" fx:id="colShotsWhenFired"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="AttackRecoil" fx:id="colAttackRecoil"/>
+            <TableColumn onEditCommit="#costCellCommit" prefWidth="60" text="Cost" fx:id="colCost"/>
+            <TableColumn onEditCommit="#rarityCellCommit" prefWidth="40" text="Rarity" fx:id="colRarity"/>
+            <TableColumn onEditCommit="#purchasableCellCommit" prefWidth="40" text="Purchasable" fx:id="colPurchasable"/>
+            <TableColumn onEditCommit="#iSizeCellCommit" prefWidth="40" text="ISize" fx:id="colISize"/>
         </columns>
     </TableView>
 </AnchorPane>

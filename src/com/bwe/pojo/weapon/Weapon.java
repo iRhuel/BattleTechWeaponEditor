@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,11 @@ public class Weapon {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonIgnore
-    public void adjustDmg(int val) {
+    public void adjustDmg(Integer val) {
+        if (val == null) {
+            damage = null;
+            return;
+        }
         if (bonusValueA.contains(" Dmg")) {
             val += bonusValue(bonusValueA);
         }
@@ -169,10 +174,10 @@ public class Weapon {
     @JsonIgnore
     public void adjustCrit(double val) {
         if (bonusValueA.contains(" Crit")) {
-            val += bonusValue(bonusValueA)/100D;
+            val += bonusValue(bonusValueA) / 100D;
         }
         if (bonusValueB.contains(" Crit")) {
-            val += bonusValue(bonusValueB)/100D;
+            val += bonusValue(bonusValueB) / 100D;
         }
         criticalChanceMultiplier = val;
     }
@@ -200,20 +205,20 @@ public class Weapon {
             oldBonus = "";
 
         if (!oldBonus.equals("")) {
-            if (oldBonus.contains(" Dmg.")) {
+            if (oldBonus.contains(" Dmg.") && damage != null) {
                 damage -= bonusValue(oldBonus);
             }
-            if (oldBonus.contains(" Acc.")) {
+            if (oldBonus.contains(" Acc.") && accuracyModifier != null) {
                 accuracyModifier += bonusValue(oldBonus);
             }
-            if (oldBonus.contains(" Heat")) {
+            if (oldBonus.contains(" Heat") && heatGenerated != null) {
                 heatGenerated += bonusValue(oldBonus);
             }
-            if (oldBonus.contains(" Stb.")) {
+            if (oldBonus.contains(" Stb.") && instability != null) {
                 instability -= bonusValue(oldBonus);
             }
-            if (oldBonus.contains(" Crit.")) {
-                criticalChanceMultiplier -= bonusValue(oldBonus)/100D;
+            if (oldBonus.contains(" Crit.") && criticalChanceMultiplier != null) {
+                criticalChanceMultiplier -= bonusValue(oldBonus) / 100D;
             }
         }
 
@@ -222,20 +227,20 @@ public class Weapon {
         else if (bonusNum == 2)
             bonusValueB = newBonus;
 
-        if (newBonus.contains(" Dmg.")) {
+        if (newBonus.contains(" Dmg.") && damage != null) {
             damage += bonusValue(newBonus);
         }
-        if (newBonus.contains(" Acc.")) {
+        if (newBonus.contains(" Acc.") && accuracyModifier != null) {
             accuracyModifier -= bonusValue(newBonus);
         }
-        if (newBonus.contains(" Heat")) {
+        if (newBonus.contains(" Heat") && heatGenerated != null) {
             heatGenerated -= bonusValue(newBonus);
         }
-        if (newBonus.contains(" Stb.")) {
+        if (newBonus.contains(" Stb.") && instability != null) {
             instability += bonusValue(newBonus);
         }
-        if (newBonus.contains(" Crit.")) {
-            criticalChanceMultiplier += bonusValue(newBonus)/100D;
+        if (newBonus.contains(" Crit.") && criticalChanceMultiplier != null) {
+            criticalChanceMultiplier += bonusValue(newBonus) / 100D;
         }
     }
 
@@ -251,11 +256,55 @@ public class Weapon {
         return Integer.parseInt(bonus.substring(i, j));
     }
 
-    @JsonIgnore @Deprecated
-    private double round(double value) {
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+    @JsonIgnore
+    private String round(double value) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(value);
+//        BigDecimal bd = new BigDecimal(value);
+//        bd = bd.setScale(2, RoundingMode.HALF_UP);
+//        return bd.doubleValue();
+    }
+
+    @JsonIgnore
+    public Integer getDmgAdjusted() {
+        if (damage == null || shotsWhenFired == null)
+            return null;
+        return damage * shotsWhenFired;
+    }
+
+    @JsonIgnore
+    public Integer getStabAdjusted() {
+        if (instability == null || shotsWhenFired == null)
+            return null;
+        return instability * shotsWhenFired;
+    }
+
+    @JsonIgnore
+    public String getDmgPerHeat() {
+        if (getDmgAdjusted() == null || heatGenerated == null)
+            return "N/A";
+        return round((double) getDmgAdjusted() / heatGenerated);
+    }
+
+    @JsonIgnore
+    public String getDmgPerTon() {
+        if (getDmgAdjusted() == null || tonnage == null)
+            return "N/A";
+        return round((double) getDmgAdjusted() / tonnage);
+    }
+
+    @JsonIgnore
+    public String getStabPerHeat() {
+        if (getStabAdjusted() == null || heatGenerated == null)
+            return "N/A";
+        return round((double) getStabAdjusted() / heatGenerated);
+    }
+
+    @JsonIgnore
+    public String getStabPerTon() {
+        if (getStabAdjusted() == null || tonnage == null)
+            return "N/A";
+        return round((double) getStabAdjusted() / tonnage);
     }
 
     @JsonIgnore
@@ -269,33 +318,18 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public int getDmgAdjusted() {
-        return damage * shotsWhenFired;
+    public Integer getCost() {
+        return description.getCost();
     }
 
     @JsonIgnore
-    public int getStabAdjusted() {
-        return instability * shotsWhenFired;
+    public Integer getRarity() {
+        return description.getRarity();
     }
 
     @JsonIgnore
-    public double getDmgPerHeat() {
-        return (double)getDmgAdjusted()/heatGenerated;
-    }
-
-    @JsonIgnore
-    public double getDmgPerTon() {
-        return (double)getDmgAdjusted()/tonnage;
-    }
-
-    @JsonIgnore
-    public double getStabPerHeat() {
-        return (double)getStabAdjusted()/heatGenerated;
-    }
-
-    @JsonIgnore
-    public double getStabPerTon() {
-        return (double)getStabAdjusted()/tonnage;
+    public Boolean getPurchasable() {
+        return description.getPurchasable();
     }
 
     @JsonProperty("Category")

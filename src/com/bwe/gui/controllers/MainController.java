@@ -23,6 +23,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.BooleanStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -44,21 +45,31 @@ public class MainController {
     public ListView<String> filterListBox;
     public Button filterButton;
 
-    public TableView<Weapon> filterTable;
+    public TableView<Weapon> displayTable;
     public TableColumn<Weapon, String> colName;
     public TableColumn<Weapon, String> colMnf;
     public TableColumn<Weapon, Integer> colDmg;
     public TableColumn<Weapon, Integer> colStab;
+    public TableColumn<Weapon, Integer> colHeatDmg;
     public TableColumn<Weapon, Integer> colAcc;
     public TableColumn<Weapon, Double> colCrit;
     public TableColumn<Weapon, Integer> colHeat;
     public TableColumn<Weapon, Double> colTons;
     public TableColumn<Weapon, String> colBonusA;
     public TableColumn<Weapon, String> colBOnusB;
-    public TableColumn<Weapon, Double> colDmgPerTon;
-    public TableColumn<Weapon, Double> colDmgPerHeat;
-    public TableColumn<Weapon, Double> colStabPerTon;
-    public TableColumn<Weapon, Double> colStabPerHeat;
+    public TableColumn<Weapon, String> colDmgPerTon;
+    public TableColumn<Weapon, String> colDmgPerHeat;
+    public TableColumn<Weapon, String> colStabPerTon;
+    public TableColumn<Weapon, String> colStabPerHeat;
+    public TableColumn<Weapon, Integer> colMinRange;
+    public TableColumn<Weapon, Integer> colMaxRange;
+    public TableColumn<Weapon, Integer> colRefireMod;
+    public TableColumn<Weapon, Integer> colShotsWhenFired;
+    public TableColumn<Weapon, Integer> colAttackRecoil;
+    public TableColumn<Weapon, Integer> colCost;
+    public TableColumn<Weapon, Integer> colRarity;
+    public TableColumn<Weapon, Boolean> colPurchasable;
+    public TableColumn<Weapon, Integer> colISize;
 
     private Stage mainStage;
 
@@ -71,31 +82,57 @@ public class MainController {
         list = new WeaponCollection(prefs.getWorkingDir());
 
         filterComboBox.getItems().addAll("All", "Category", "Type", "WeaponSubType");
+        setCellValueFactories();
+        setCellFactories();
+        populateTable();
+    }
 
+    private void setCellValueFactories() {
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colMnf.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
         colDmg.setCellValueFactory(new PropertyValueFactory<>("dmgAdjusted"));
-        colDmg.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colStab.setCellValueFactory(new PropertyValueFactory<>("stabAdjusted"));
-        colStab.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colHeatDmg.setCellValueFactory(new PropertyValueFactory<>("heatDamage"));
         colAcc.setCellValueFactory(new PropertyValueFactory<>("accuracyModifier"));
-        colAcc.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colCrit.setCellValueFactory(new PropertyValueFactory<>("criticalChanceMultiplier"));
-        colCrit.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         colHeat.setCellValueFactory(new PropertyValueFactory<>("heatGenerated"));
-        colHeat.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colTons.setCellValueFactory(new PropertyValueFactory<>("tonnage"));
-        colTons.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         colBonusA.setCellValueFactory(new PropertyValueFactory<>("bonusValueA"));
-        colBonusA.setCellFactory(TextFieldTableCell.forTableColumn());
         colBOnusB.setCellValueFactory(new PropertyValueFactory<>("bonusValueB"));
-        colBOnusB.setCellFactory(TextFieldTableCell.forTableColumn());
         colDmgPerTon.setCellValueFactory(new PropertyValueFactory<>("dmgPerTon"));
         colDmgPerHeat.setCellValueFactory(new PropertyValueFactory<>("dmgPerHeat"));
         colStabPerTon.setCellValueFactory(new PropertyValueFactory<>("stabPerTon"));
         colStabPerHeat.setCellValueFactory(new PropertyValueFactory<>("stabPerHeat"));
+        colMinRange.setCellValueFactory(new PropertyValueFactory<>("minRange"));
+        colMaxRange.setCellValueFactory(new PropertyValueFactory<>("maxRange"));
+        colRefireMod.setCellValueFactory(new PropertyValueFactory<>("refireModifier"));
+        colShotsWhenFired.setCellValueFactory(new PropertyValueFactory<>("shotsWhenFired"));
+        colAttackRecoil.setCellValueFactory(new PropertyValueFactory<>("attackRecoil"));
+        colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        colRarity.setCellValueFactory(new PropertyValueFactory<>("rarity"));
+        colPurchasable.setCellValueFactory(new PropertyValueFactory<>("purchasable"));
+        colISize.setCellValueFactory(new PropertyValueFactory<>("inventorySize"));
+    }
 
-        populateTable();
+    private void setCellFactories() {
+        colName.setCellFactory(TextFieldTableCell.forTableColumn());
+        colMnf.setCellFactory(TextFieldTableCell.forTableColumn());
+        colDmg.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colStab.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colHeatDmg.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colAcc.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colCrit.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        colTons.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        colHeat.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colBonusA.setCellFactory(TextFieldTableCell.forTableColumn());
+        colBOnusB.setCellFactory(TextFieldTableCell.forTableColumn());
+        colRefireMod.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colShotsWhenFired.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colAttackRecoil.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colCost.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colRarity.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colPurchasable.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+        colISize.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
     }
 
     public void fileOpen(ActionEvent actionEvent) {
@@ -153,7 +190,7 @@ public class MainController {
                 list.restore(file);
         }
         list = new WeaponCollection(prefs.getWorkingDir());
-        filterTable.refresh();
+        populateTable();
     }
 
     public void helpAbout(ActionEvent actionEvent) {
@@ -198,33 +235,62 @@ public class MainController {
         populateTable();
     }
 
+    public void nameCellCommit(TableColumn.CellEditEvent<Weapon,String> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setName(cellEditEvent.getNewValue());
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setUIName(cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void mfrCellCommit(TableColumn.CellEditEvent<Weapon,String> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setManufacturer(cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
     private void populateTable() {
         list.filter(filterComboBox.getValue(), filterListBox.getSelectionModel().getSelectedItem(), toggleStock.isSelected());
         ObservableList<Weapon> observableList = FXCollections.observableList(list.getWeaponSubList());
-        filterTable.setItems(observableList);
+        displayTable.setItems(observableList);
     }
 
-    public void intCellCommit(TableColumn.CellEditEvent cell) {
-        Weapon wpn = filterTable.getSelectionModel().getSelectedItem();
-        list.batchEdit(wpn.getWeaponSubType(), cell.getTableColumn().getText(), Integer.parseInt(cell.getNewValue().toString()));
-        filterTable.refresh();
+    public void bonusACellCommit(TableColumn.CellEditEvent cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().adjustBonus(cellEditEvent.getNewValue().toString(), 1);
+        displayTable.refresh();
     }
 
-    public void dlbCellCommit(TableColumn.CellEditEvent cell) {
-        Weapon wpn = filterTable.getSelectionModel().getSelectedItem();
-        list.batchEdit(wpn.getWeaponSubType(), cell.getTableColumn().getText(), Double.parseDouble(cell.getNewValue().toString()));
-        filterTable.refresh();
+    public void bonusBCellCommit(TableColumn.CellEditEvent cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().adjustBonus(cellEditEvent.getNewValue().toString(), 2);
+        displayTable.refresh();
     }
 
-    public void bonusACellCommit(TableColumn.CellEditEvent cell) {
-        Weapon wpn = filterTable.getSelectionModel().getSelectedItem();
-        wpn.adjustBonus(cell.getNewValue().toString(), 1);
-        filterTable.refresh();
+    public void integerBatchEdit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
+        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        list.batchEdit(wpn.getWeaponSubType(), cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
+        displayTable.refresh();
     }
 
-    public void bonusBCellCommit(TableColumn.CellEditEvent cell) {
-        Weapon wpn = filterTable.getSelectionModel().getSelectedItem();
-        wpn.adjustBonus(cell.getNewValue().toString(), 2);
-        filterTable.refresh();
+    public void doubleBatchEdit(TableColumn.CellEditEvent<Weapon, Double> cellEditEvent) {
+        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        list.batchEdit(wpn.getWeaponSubType(), cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void costCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setCost(cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void rarityCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setRarity(cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void iSizeCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().setInventorySize(cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void purchasableCellCommit(TableColumn.CellEditEvent<Weapon, Boolean> cellEditEvent) {
+        displayTable.getSelectionModel().getSelectedItem().getDescription().setPurchasable(cellEditEvent.getNewValue());
+        displayTable.refresh();
     }
 }

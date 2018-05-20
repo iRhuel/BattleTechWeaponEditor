@@ -35,6 +35,8 @@ EDITOR
 ---------------
 NOTES
 
+- MOD AUTHORS: in order to edit batched values, your files MUST at least contain the 'WeaponSubType' key:value pair with a non-null value. This is how BWE selects what to batch edit. This goes for all batched values (not Bonus Strings).
+
 - as this is a beta release, it's encouraged to create your own manual backup of "/weapon" until you feel confident in the backup and restore functionality. Just in case.
 
 - works on mod weapons, so long as they follow the same json structure as the vanilla weapons. Just point the app to the folder containing the mod weapons.
@@ -45,8 +47,6 @@ NOTES
 
 ---------------
 KNOWN ISSUES
-
-- after restoring from backup, table does not properly refresh after parameter changes unless filtered again
 
 ---------------
 LICENSE

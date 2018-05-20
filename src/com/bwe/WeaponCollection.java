@@ -160,10 +160,10 @@ public class WeaponCollection {
                 }
                 break;
         }
-        weaponSubList.sort(new IWeaponComparator());
+//        weaponSubList.sort(new IWeaponComparator());
     }
 
-    public void batchEdit(String weaponSubType, String valName, int newInt) {
+    public void batchEdit(String weaponSubType, String valName, Integer newInt) {
         for (Weapon wpn : weaponArrayList) {
             if (wpn.getWeaponSubType().equals(weaponSubType)) {
                 switch (valName) {
@@ -175,6 +175,10 @@ public class WeaponCollection {
                         wpn.adjustStab(newInt);
                         break;
 
+                    case "HDmg":
+                        wpn.setHeatDamage(newInt);
+                        break;
+
                     case "AccMod":
                         wpn.adjustAcc(newInt);
                         break;
@@ -182,12 +186,32 @@ public class WeaponCollection {
                     case "Heat":
                         wpn.adjustHeat(newInt);
                         break;
+
+                    case "MinRange":
+                        wpn.setMinRange(newInt);
+                        break;
+
+                    case "MaxRange":
+                        wpn.setMaxRange(newInt);
+                        break;
+
+                    case "RefireMod":
+                        wpn.setRefireModifier(newInt);
+                        break;
+
+                    case "ShotsWhenFired":
+                        wpn.setShotsWhenFired(newInt);
+                        break;
+
+                    case "AttackRecoil":
+                        wpn.setAttackRecoil(newInt);
+                        break;
                 }
             }
         }
     }
 
-    public void batchEdit(String weaponSubType, String valName, double newDbl) {
+    public void batchEdit(String weaponSubType, String valName, Double newDbl) {
         for (Weapon wpn : weaponArrayList) {
             if (wpn.getWeaponSubType().equals(weaponSubType)) {
                 switch (valName) {
