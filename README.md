@@ -30,6 +30,8 @@ You will need at least [Java 10 JRE](http://www.oracle.com/technetwork/java/java
 
 - "Edit->Restore Backup" to restore your weapon .jsons from a previously generated backup .json.
 
+- "View->Columns" to select which columns are displayed. The program will remember these choices.
+
 - "Help->About" to view the readme file with these instructions.
 
 ### Editor

@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -33,43 +34,49 @@ import java.util.Date;
 
 public class MainController {
 
-    public MenuItem fileOpen;
-    public MenuItem fileExit;
-    public MenuItem editSave;
-    public MenuItem editBackup;
-    public MenuItem editRestore;
-    public MenuItem helpAbout;
+    @FXML private MenuItem fileOpen;
+    @FXML private MenuItem fileExit;
+    @FXML private MenuItem editSave;
+    @FXML private MenuItem editBackup;
+    @FXML private MenuItem editRestore;
+    @FXML private MenuItem viewColumns;
+    @FXML private MenuItem helpAbout;
 
-    public ComboBox<String> filterComboBox;
-    public CheckBox toggleStock;
-    public ListView<String> filterListBox;
-    public Button filterButton;
+    @FXML private ComboBox<String> filterComboBox;
+    @FXML private CheckBox toggleStock;
+    @FXML private ListView<String> filterListBox;
+    @FXML private Button filterButton;
 
-    public TableView<Weapon> displayTable;
-    public TableColumn<Weapon, String> colName;
-    public TableColumn<Weapon, String> colMnf;
-    public TableColumn<Weapon, Integer> colDmg;
-    public TableColumn<Weapon, Integer> colStab;
-    public TableColumn<Weapon, Integer> colHeatDmg;
-    public TableColumn<Weapon, Integer> colAcc;
-    public TableColumn<Weapon, Double> colCrit;
-    public TableColumn<Weapon, Integer> colHeat;
-    public TableColumn<Weapon, Double> colTons;
-    public TableColumn<Weapon, String> colBonusA;
-    public TableColumn<Weapon, String> colBOnusB;
-    public TableColumn<Weapon, String> colDmgPerTon;
-    public TableColumn<Weapon, String> colDmgPerHeat;
-    public TableColumn<Weapon, String> colStabPerTon;
-    public TableColumn<Weapon, String> colStabPerHeat;
-    public TableColumn<Weapon, Integer> colMinRange;
-    public TableColumn<Weapon, Integer> colMaxRange;
-    public TableColumn<Weapon, Integer> colRefireMod;
-    public TableColumn<Weapon, Integer> colShotsWhenFired;
-    public TableColumn<Weapon, Integer> colAttackRecoil;
-    public TableColumn<Weapon, Integer> colCost;
-    public TableColumn<Weapon, Integer> colRarity;
-    public TableColumn<Weapon, Boolean> colPurchasable;
-    public TableColumn<Weapon, Integer> colISize;
+    @FXML private TableView<Weapon> displayTable;
+    @FXML private TableColumn<Weapon, String> colName;
+    @FXML private TableColumn<Weapon, String> colMfr;
+    @FXML private TableColumn<Weapon, Integer> colDmg;
+    @FXML private TableColumn<Weapon, Integer> colStb;
+    @FXML private TableColumn<Weapon, Integer> colHeatDmg;
+    @FXML private TableColumn<Weapon, Integer> colAccMod;
+    @FXML private TableColumn<Weapon, Double> colCrit;
+    @FXML private TableColumn<Weapon, Integer> colHeat;
+    @FXML private TableColumn<Weapon, Double> colTons;
+    @FXML private TableColumn<Weapon, String> colBonusA;
+    @FXML private TableColumn<Weapon, String> colBOnusB;
+    @FXML private TableColumn<Weapon, String> colDmgPerTon;
+    @FXML private TableColumn<Weapon, String> colDmgPerHeat;
+    @FXML private TableColumn<Weapon, String> colStabPerTon;
+    @FXML private TableColumn<Weapon, String> colStabPerHeat;
+    @FXML private TableColumn<Weapon, Integer> colMinRange;
+    @FXML private TableColumn<Weapon, Integer> colMaxRange;
+    @FXML private TableColumn<Weapon, Integer> colRefireMod;
+    @FXML private TableColumn<Weapon, Integer> colShotsWhenFired;
+    @FXML private TableColumn<Weapon, Integer> colAttackRecoil;
+    @FXML private TableColumn<Weapon, Integer> colCost;
+    @FXML private TableColumn<Weapon, Integer> colRarity;
+    @FXML private TableColumn<Weapon, Boolean> colPurchasable;
+    @FXML private TableColumn<Weapon, Integer> colISize;
+
+    private TableColumn[] tableColumns;
+
+    @FXML private AnchorPane columnToggles;
+    @FXML private ColumnTogglesController columnTogglesController;
 
     private Stage mainStage;
 
@@ -80,20 +87,29 @@ public class MainController {
     private void initialize() {
         prefs = new Prefs();
         list = new WeaponCollection(prefs.getWorkingDir());
+        tableColumns = new TableColumn[]{
+                colName, colMfr, colDmg, colStb, colHeatDmg,
+                colAccMod, colCrit, colHeat, colTons, colBonusA,
+                colBOnusB, colDmgPerTon, colDmgPerHeat, colStabPerTon, colStabPerHeat,
+                colMinRange, colMaxRange, colRefireMod, colShotsWhenFired, colAttackRecoil,
+                colCost, colRarity, colPurchasable, colISize
+        };
 
         filterComboBox.getItems().addAll("All", "Category", "Type", "WeaponSubType");
+
         setCellValueFactories();
         setCellFactories();
+        setVisibleColumns();
         populateTable();
     }
 
     private void setCellValueFactories() {
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colMnf.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        colMfr.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
         colDmg.setCellValueFactory(new PropertyValueFactory<>("dmgAdjusted"));
-        colStab.setCellValueFactory(new PropertyValueFactory<>("stabAdjusted"));
+        colStb.setCellValueFactory(new PropertyValueFactory<>("stabAdjusted"));
         colHeatDmg.setCellValueFactory(new PropertyValueFactory<>("heatDamage"));
-        colAcc.setCellValueFactory(new PropertyValueFactory<>("accuracyModifier"));
+        colAccMod.setCellValueFactory(new PropertyValueFactory<>("accuracyModifier"));
         colCrit.setCellValueFactory(new PropertyValueFactory<>("criticalChanceMultiplier"));
         colHeat.setCellValueFactory(new PropertyValueFactory<>("heatGenerated"));
         colTons.setCellValueFactory(new PropertyValueFactory<>("tonnage"));
@@ -116,11 +132,11 @@ public class MainController {
 
     private void setCellFactories() {
         colName.setCellFactory(TextFieldTableCell.forTableColumn());
-        colMnf.setCellFactory(TextFieldTableCell.forTableColumn());
+        colMfr.setCellFactory(TextFieldTableCell.forTableColumn());
         colDmg.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        colStab.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colStb.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colHeatDmg.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        colAcc.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colAccMod.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colCrit.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         colTons.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         colHeat.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -135,15 +151,27 @@ public class MainController {
         colISize.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
     }
 
+    private void setVisibleColumns() {
+        for (int i = 0; i < tableColumns.length; i++)
+            tableColumns[i].setVisible(prefs.getShowCol(i));
+    }
+
     public void fileOpen(ActionEvent actionEvent) {
+        File initDir = new File(prefs.getWorkingDir());
+        if (!initDir.exists()) {
+            prefs.setWorkingDir("C://");
+            initDir = new File(prefs.getWorkingDir());
+        }
+
         DirectoryChooser dChooser = new DirectoryChooser();
         dChooser.setTitle("Select Directory");
-        dChooser.setInitialDirectory(new File(prefs.getWorkingDir()));
+        dChooser.setInitialDirectory(initDir);
         File dir = dChooser.showDialog(mainStage);
         if (dir != null) {
             prefs.setWorkingDir(dir.getAbsolutePath());
             list = new WeaponCollection(dir.getAbsolutePath());
         }
+
         populateTable();
     }
 
@@ -163,9 +191,15 @@ public class MainController {
         String timeStamp = new SimpleDateFormat("dd.MM.yyyy-HH.mm").format(new Date());
         String sampleFileName = "BWEBackup-" + timeStamp;
 
+        File initDir = new File(prefs.getBackupDir());
+        if (!initDir.exists()) {
+            prefs.setBackupDir("C://");
+            initDir = new File(prefs.getBackupDir());
+        }
+
         FileChooser fChooser = new FileChooser();
         fChooser.setTitle("Select Save Location");
-        fChooser.setInitialDirectory(new File(prefs.getBackupDir()));
+        fChooser.setInitialDirectory(initDir);
         fChooser.setInitialFileName(sampleFileName);
         fChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json", "*.json"));
         File file = fChooser.showSaveDialog(mainStage);
@@ -176,9 +210,16 @@ public class MainController {
     }
 
     public void editRestoreBackup(ActionEvent actionEvent) {
+
+        File initDir = new File(prefs.getBackupDir());
+        if (!initDir.exists()) {
+            prefs.setBackupDir("C://");
+            initDir = new File(prefs.getBackupDir());
+        }
+
         FileChooser fChooser = new FileChooser();
         fChooser.setTitle("Select Save Location");
-        fChooser.setInitialDirectory(new File(prefs.getBackupDir()));
+        fChooser.setInitialDirectory(initDir);
         fChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json", "*.json"));
         File file = fChooser.showOpenDialog(mainStage);
 
@@ -191,6 +232,51 @@ public class MainController {
         }
         list = new WeaponCollection(prefs.getWorkingDir());
         populateTable();
+    }
+
+    public void viewColumns(ActionEvent actionEvent) {
+
+        TableColumn[] tableColumns = {
+                colName, colMfr, colDmg, colStb, colHeatDmg,
+                colAccMod, colCrit, colHeat, colTons, colBonusA,
+                colBOnusB, colDmgPerTon, colDmgPerHeat, colStabPerTon, colStabPerHeat,
+                colMinRange, colMaxRange, colRefireMod, colShotsWhenFired, colAttackRecoil,
+                colCost, colRarity, colPurchasable, colISize
+        };
+
+        try {
+            boolean[] flags = new boolean[24];
+            for (int i = 0; i < flags.length; i++)
+                flags[i] = tableColumns[i].isVisible();
+
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gui/fxml/columntoggles.fxml"));
+            Parent root = loader.load();
+            ColumnTogglesController columnTogglesController = loader.getController();
+            columnTogglesController.setNameColVisibility(flags);
+            Scene columnsScene = new Scene(root);
+            Stage columnsStage = new Stage();
+            columnsStage.setScene(columnsScene);
+            columnsStage.initOwner(colName.getTableView().getScene().getWindow());
+            columnsStage.setOnHidden(event -> setColumnVisibility(columnTogglesController.getSelections()));
+            columnsStage.setTitle("Column Toggles");
+            columnsStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setColumnVisibility(boolean[] flags) {
+        TableColumn[] tableColumns = {
+                colName, colMfr, colDmg, colStb, colHeatDmg,
+                colAccMod, colCrit, colHeat, colTons, colBonusA,
+                colBOnusB, colDmgPerTon, colDmgPerHeat, colStabPerTon, colStabPerHeat,
+                colMinRange, colMaxRange, colRefireMod, colShotsWhenFired, colAttackRecoil,
+                colCost, colRarity, colPurchasable, colISize
+        };
+        for (int i = 0; i < tableColumns.length; i++) {
+            tableColumns[i].setVisible(flags[i]);
+            prefs.setShowCol(i, flags[i]);
+        }
     }
 
     public void helpAbout(ActionEvent actionEvent) {
@@ -235,21 +321,21 @@ public class MainController {
         populateTable();
     }
 
-    public void nameCellCommit(TableColumn.CellEditEvent<Weapon,String> cellEditEvent) {
+    private void populateTable() {
+        list.filter(filterComboBox.getValue(), filterListBox.getSelectionModel().getSelectedItem(), toggleStock.isSelected());
+        ObservableList<Weapon> observableList = FXCollections.observableList(list.getWeaponSubList());
+        displayTable.setItems(observableList);
+    }
+
+    public void nameCellCommit(TableColumn.CellEditEvent<Weapon, String> cellEditEvent) {
         displayTable.getSelectionModel().getSelectedItem().getDescription().setName(cellEditEvent.getNewValue());
         displayTable.getSelectionModel().getSelectedItem().getDescription().setUIName(cellEditEvent.getNewValue());
         displayTable.refresh();
     }
 
-    public void mfrCellCommit(TableColumn.CellEditEvent<Weapon,String> cellEditEvent) {
+    public void mfrCellCommit(TableColumn.CellEditEvent<Weapon, String> cellEditEvent) {
         displayTable.getSelectionModel().getSelectedItem().getDescription().setManufacturer(cellEditEvent.getNewValue());
         displayTable.refresh();
-    }
-
-    private void populateTable() {
-        list.filter(filterComboBox.getValue(), filterListBox.getSelectionModel().getSelectedItem(), toggleStock.isSelected());
-        ObservableList<Weapon> observableList = FXCollections.observableList(list.getWeaponSubList());
-        displayTable.setItems(observableList);
     }
 
     public void bonusACellCommit(TableColumn.CellEditEvent cellEditEvent) {
@@ -274,23 +360,22 @@ public class MainController {
         displayTable.refresh();
     }
 
-    public void costCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
+    public void costCellCommit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
         displayTable.getSelectionModel().getSelectedItem().getDescription().setCost(cellEditEvent.getNewValue());
         displayTable.refresh();
     }
 
-    public void rarityCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
+    public void rarityCellCommit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
         displayTable.getSelectionModel().getSelectedItem().getDescription().setRarity(cellEditEvent.getNewValue());
-        displayTable.refresh();
-    }
-
-    public void iSizeCellCommit(TableColumn.CellEditEvent<Weapon,Integer> cellEditEvent) {
-        displayTable.getSelectionModel().getSelectedItem().setInventorySize(cellEditEvent.getNewValue());
         displayTable.refresh();
     }
 
     public void purchasableCellCommit(TableColumn.CellEditEvent<Weapon, Boolean> cellEditEvent) {
         displayTable.getSelectionModel().getSelectedItem().getDescription().setPurchasable(cellEditEvent.getNewValue());
         displayTable.refresh();
+    }
+
+    public Prefs getPrefs() {
+        return prefs;
     }
 }

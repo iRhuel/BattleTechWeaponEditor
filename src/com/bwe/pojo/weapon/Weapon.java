@@ -150,7 +150,7 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public void adjustStab(int val) {
+    public void adjustStb(int val) {
         if (bonusValueA.contains(" Stb")) {
             val += bonusValue(bonusValueA);
         }

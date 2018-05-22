@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+            prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.bwe.gui.controllers.MainController">
     <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="File">
@@ -23,6 +23,11 @@
             <MenuItem mnemonicParsing="false" onAction="#editSave" text="Save Changes" fx:id="editSave"/>
             <MenuItem mnemonicParsing="false" onAction="#editCreateBackup" text="Create Backup" fx:id="editBackup"/>
             <MenuItem mnemonicParsing="false" onAction="#editRestoreBackup" text="Restore Backup" fx:id="editRestore"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="View">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#viewColumns" text="Columns" fx:id="viewColumns"/>
+            </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" onAction="#helpAbout" text="About" fx:id="helpAbout"/>
@@ -41,16 +46,15 @@
                   prefWidth="150.0" text="Stock Only" textAlignment="CENTER"/>
         <ListView id="filterList" fx:id="filterListBox" prefHeight="200.0" prefWidth="150.0" VBox.vgrow="ALWAYS"/>
     </VBox>
-    <TableView fx:id="displayTable" editable="true" prefHeight="576.0" prefWidth="650.0" tableMenuButtonVisible="true"
-               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0"
-               AnchorPane.topAnchor="24.0">
+    <TableView fx:id="displayTable" editable="true" prefHeight="576.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
         <columns>
             <TableColumn onEditCommit="#nameCellCommit" prefWidth="90.0" text="Name" fx:id="colName"/>
-            <TableColumn onEditCommit="#mfrCellCommit" prefWidth="100.0" text="Manufacturer" fx:id="colMnf"/>
+            <TableColumn onEditCommit="#mfrCellCommit" prefWidth="100.0" text="Manufacturer" fx:id="colMfr"/>
             <TableColumn onEditCommit="#integerBatchEdit" text="Dmg" fx:id="colDmg"/>
-            <TableColumn onEditCommit="#integerBatchEdit" text="Stb" fx:id="colStab"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="Stb" fx:id="colStb"/>
             <TableColumn onEditCommit="#integerBatchEdit" text="HDmg" fx:id="colHeatDmg"/>
-            <TableColumn onEditCommit="#integerBatchEdit" text="AccMod" fx:id="colAcc"/>
+            <TableColumn onEditCommit="#integerBatchEdit" text="AccMod" fx:id="colAccMod"/>
             <TableColumn onEditCommit="#doubleBatchEdit" text="Crit" fx:id="colCrit"/>
             <TableColumn onEditCommit="#integerBatchEdit" text="Heat" fx:id="colHeat"/>
             <TableColumn onEditCommit="#doubleBatchEdit" text="Tons" fx:id="colTons"/>
@@ -62,13 +66,15 @@
             <TableColumn prefWidth="60.0" text="Stb/Ht" fx:id="colStabPerHeat"/>
             <TableColumn onEditCommit="#integerBatchEdit" prefWidth="45.0" text="MinRange" fx:id="colMinRange"/>
             <TableColumn onEditCommit="#integerBatchEdit" prefWidth="45.0" text="MaxRange" fx:id="colMaxRange"/>
-            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="RefireMod" fx:id="colRefireMod"/>
-            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="ShotsWhenFired" fx:id="colShotsWhenFired"/>
-            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40" text="AttackRecoil" fx:id="colAttackRecoil"/>
-            <TableColumn onEditCommit="#costCellCommit" prefWidth="60" text="Cost" fx:id="colCost"/>
-            <TableColumn onEditCommit="#rarityCellCommit" prefWidth="40" text="Rarity" fx:id="colRarity"/>
-            <TableColumn onEditCommit="#purchasableCellCommit" prefWidth="40" text="Purchasable" fx:id="colPurchasable"/>
-            <TableColumn onEditCommit="#iSizeCellCommit" prefWidth="40" text="ISize" fx:id="colISize"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40.0" text="RefireMod" fx:id="colRefireMod"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40.0" text="ShotsWhenFired"
+                         fx:id="colShotsWhenFired"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40.0" text="AttackRecoil" fx:id="colAttackRecoil"/>
+            <TableColumn onEditCommit="#costCellCommit" prefWidth="60.0" text="Cost" fx:id="colCost"/>
+            <TableColumn onEditCommit="#rarityCellCommit" prefWidth="40.0" text="Rarity" fx:id="colRarity"/>
+            <TableColumn onEditCommit="#purchasableCellCommit" prefWidth="40.0" text="Purchasable"
+                         fx:id="colPurchasable"/>
+            <TableColumn onEditCommit="#integerBatchEdit" prefWidth="40.0" text="ISize" fx:id="colISize"/>
         </columns>
     </TableView>
 </AnchorPane>

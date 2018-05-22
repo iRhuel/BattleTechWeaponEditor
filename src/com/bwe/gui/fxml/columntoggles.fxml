@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="160.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.bwe.gui.controllers.ColumnTogglesController">
+  <VBox prefHeight="600.0" prefWidth="200.0" spacing="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <padding>
+      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+    </padding>
+    <CheckBox fx:id="name" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Name" VBox.vgrow="ALWAYS" />
+    <CheckBox fx:id="mfr" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Manufacturer" />
+    <CheckBox fx:id="dmg" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Damage" />
+    <CheckBox fx:id="stb" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Instability" />
+    <CheckBox fx:id="heatDmg" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="HeatDamage" />
+    <CheckBox fx:id="accMod" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="AccuracyModifier" />
+    <CheckBox fx:id="crit" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="CriticalChanceMultiplier" />
+    <CheckBox fx:id="heatGen" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="HeatGenerated" />
+    <CheckBox fx:id="tons" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Tonnage" />
+    <CheckBox fx:id="bonusA" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="BonusValueA" />
+    <CheckBox fx:id="bonusB" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="BonusValueB" />
+    <CheckBox fx:id="dmgPerTon" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="DamagePerTon" />
+    <CheckBox fx:id="dmgPerHeat" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="DamagePerHeat" />
+    <CheckBox fx:id="stbPerTon" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="InstabilityPerTon" />
+    <CheckBox fx:id="stbPerHeat" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="InstabilityPerHeat" />
+    <CheckBox fx:id="minRange" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="MinRange" />
+    <CheckBox fx:id="maxRange" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="MaxRange" />
+    <CheckBox fx:id="refireMod" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="RefireModifier" />
+    <CheckBox fx:id="shotsWhenFired" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="ShotsWhenFired" />
+    <CheckBox fx:id="attackRecoil" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="AttackRecoil" />
+    <CheckBox fx:id="cost" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cost" />
+    <CheckBox fx:id="rarity" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rarity" />
+    <CheckBox fx:id="purchasable" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Purchasable" />
+    <CheckBox fx:id="iSize" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="InventorySize" />
+    <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonPress" text="Ok" />
+  </VBox>
+</AnchorPane>

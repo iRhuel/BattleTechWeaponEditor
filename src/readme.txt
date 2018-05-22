@@ -15,6 +15,8 @@ MENU
 
 - "Edit->Restore Backup" to restore your weapon .jsons from a previously generated backup .json.
 
+- "View->Columns" to select which columns are displayed. The program will remember these choices.
+
 - "Help->About" I mean... you're reading this.
 
 ---------------

@@ -172,7 +172,7 @@ public class WeaponCollection {
                         break;
 
                     case "Stb":
-                        wpn.adjustStab(newInt);
+                        wpn.adjustStb(newInt);
                         break;
 
                     case "HDmg":
@@ -206,6 +206,9 @@ public class WeaponCollection {
                     case "AttackRecoil":
                         wpn.setAttackRecoil(newInt);
                         break;
+
+                    case "ISize":
+                        wpn.setInventorySize(newInt);
                 }
             }
         }
