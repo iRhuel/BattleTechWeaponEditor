@@ -2,7 +2,7 @@
 ABOUT
 
 author: iRhuel
-version: 0.1.0
+version: 0.1.2
 
 ---------------
 MENU
@@ -22,13 +22,15 @@ MENU
 ---------------
 EDITOR
 
-- To repopulate the table, choose a filter category, select a subfilter, then hit the "Filter" button. If you wish to only display stock items, check the "Stock Only" box before filtering.
+- To repopulate the table, choose a filter category and select a subfilter below. If you wish to only display stock items, check the "Stock Only" box.
 
-- To edit parameters, double-click the particular parameter for the item you wish to edit. Editable parameters are: damage*, instability*, accuracy modifier, crit chance, heat generated, tonnage, stat bonus A**, and stat bonus B**.
+- To edit parameters, double-click the particular parameter for the item you wish to edit. To batch edit, check the "Batch Edit" button before editing. All values other than second-order calculated values (dmg/ton, dmg/heat, stb/ton, stb/heat) are editable.
 
-- All parameters but the stat bonuses are batch-edited by SubWeaponType; all weapons sharing the SubWeaponType will have their pase parameter set to your desired value to maintain continuity, then + items will have their bonus modifiers applied automatically.
+- Weapons are selected for batch editing by 'Name' field with all " +" substrings removed; all weapons sharing the base weapon's name will have their base parameter set to your desired value to maintain continuity, then + items will have their bonus modifiers applied automatically.
 
-- The stat bonus parameters are updated individually, and will autocorrect the appropriate parameters on assignment. Currently, the editor supports bonuses for: Dmg., Acc., Crit., Stb.Dmg., and Heat (I have not actually tested Heat as it doesn't exist as a vanilla bonus, but it should work exactly the same as the others).
+- Changes to either stat bonus will autocorrect the appropriate parameters on assignment. Currently, the editor supports bonuses for: Dmg., Acc., Crit., Stb.Dmg., and Heat (I have not actually tested Heat as it doesn't exist as a vanilla bonus, but it should work exactly the same as the others).
+
+- For vanilla items with missing values (e.g melee weapons), do not try to assign values to fields that did not already have a pre-existing value. The game may freak out...
 
 *for weapons that fire multiple projectiles in a single attack (LRMs, SRMs, MachineGun), the value displayed is per volley. HOWEVER, when editing the damage and instability parameters for these items, make sure to enter the desired value PER PROJECTILE, NOT PER VOLLEY.
 
@@ -37,18 +39,16 @@ EDITOR
 ---------------
 NOTES
 
-- MOD AUTHORS: in order to edit batched values, your files MUST at least contain the 'WeaponSubType' key:value pair with a non-null value. This is how BWE selects what to batch edit. This goes for all batched values (not Bonus Strings).
-
 - as this is a beta release, it's encouraged to create your own manual backup of "/weapon" until you feel confident in the backup and restore functionality. Just in case.
 
 - works on mod weapons, so long as they follow the same json structure as the vanilla weapons. Just point the app to the folder containing the mod weapons.
-
-- currently does not handle parameters for melee attacks.
 
 - this app hasn't been tested on any platform but Windows.
 
 ---------------
 KNOWN ISSUES
+
+- table does not auto-populate on startup
 
 ---------------
 LICENSE

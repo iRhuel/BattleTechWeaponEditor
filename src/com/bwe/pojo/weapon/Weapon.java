@@ -2,8 +2,6 @@ package com.bwe.pojo.weapon;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -273,7 +271,7 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public Integer getStabAdjusted() {
+    public Integer getStbAdjusted() {
         if (instability == null || shotsWhenFired == null)
             return null;
         return instability * shotsWhenFired;
@@ -294,17 +292,17 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public String getStabPerHeat() {
-        if (getStabAdjusted() == null || heatGenerated == null)
+    public String getStbPerHeat() {
+        if (getStbAdjusted() == null || heatGenerated == null)
             return "N/A";
-        return round((double) getStabAdjusted() / heatGenerated);
+        return round((double) getStbAdjusted() / heatGenerated);
     }
 
     @JsonIgnore
-    public String getStabPerTon() {
-        if (getStabAdjusted() == null || tonnage == null)
+    public String getStbPerTon() {
+        if (getStbAdjusted() == null || tonnage == null)
             return "N/A";
-        return round((double) getStabAdjusted() / tonnage);
+        return round((double) getStbAdjusted() / tonnage);
     }
 
     @JsonIgnore

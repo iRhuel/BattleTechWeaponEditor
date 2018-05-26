@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="745.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/2.2" fx:controller="com.bwe.gui.controllers.WeaponEditorTabController">
+    <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ComboBox fx:id="filterComboBox" onAction="#filterTypeSelected" prefHeight="21.0" prefWidth="150.0"
+                  promptText="Select Filter Type...">
+            <items>
+                <FXCollections fx:factory="observableArrayList"/>
+            </items>
+        </ComboBox>
+        <CheckBox fx:id="toggleStock" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="150.0"
+                  text="Stock Only" textAlignment="CENTER"/>
+        <CheckBox fx:id="toggleBatch" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="150.0"
+                  text="Batch Edit" textAlignment="CENTER"/>
+        <ListView id="filterList" fx:id="filterListBox" onMouseClicked="#subFilterClicked" prefHeight="200.0"
+                  prefWidth="150.0" VBox.vgrow="ALWAYS"/>
+    </VBox>
+    <TableView fx:id="displayTable" editable="true" prefHeight="776.0" prefWidth="1130.0"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+        <columns>
+            <TableColumn onEditCommit="#strCellCommit" prefWidth="90.0" text="Name" fx:id="colName"/>
+            <TableColumn onEditCommit="#strCellCommit" prefWidth="100.0" text="Manufacturer" fx:id="colMfr"/>
+            <TableColumn onEditCommit="#intCellCommit" text="Damage" fx:id="colDmg"/>
+            <TableColumn text="DamageAdjusted" fx:id="colDmgAdj"/>
+            <TableColumn onEditCommit="#intCellCommit" text="Instability" fx:id="colStb"/>
+            <TableColumn text="InstabilityAdjusted" fx:id="colStbAdj"/>
+            <TableColumn onEditCommit="#intCellCommit" text="HeatDamage" fx:id="colHeatDmg"/>
+            <TableColumn onEditCommit="#intCellCommit" text="AccuracyModifier" fx:id="colAccMod"/>
+            <TableColumn onEditCommit="#dblCellCommit" text="CriticalChanceMultiplier" fx:id="colCrit"/>
+            <TableColumn onEditCommit="#intCellCommit" text="HeatGenerated" fx:id="colHeat"/>
+            <TableColumn onEditCommit="#dblCellCommit" text="Tonnage" fx:id="colTons"/>
+            <TableColumn onEditCommit="#strCellCommit" prefWidth="85.0" text="BonusValueA" fx:id="colBonusA"/>
+            <TableColumn onEditCommit="#strCellCommit" prefWidth="85.0" text="BonusValueB" fx:id="colBOnusB"/>
+            <TableColumn prefWidth="60.0" text="DmgPerTon" fx:id="colDmgPerTon"/>
+            <TableColumn prefWidth="60.0" text="DmgPerHt" fx:id="colDmgPerHeat"/>
+            <TableColumn prefWidth="60.0" text="StbPerTon" fx:id="colStabPerTon"/>
+            <TableColumn prefWidth="60.0" text="StbPerHt" fx:id="colStabPerHeat"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="45.0" text="MinRange" fx:id="colMinRange"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="45.0" text="MaxRange" fx:id="colMaxRange"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="40.0" text="RefireModifier" fx:id="colRefireMod"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="40.0" text="ShotsWhenFired"
+                         fx:id="colShotsWhenFired"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="40.0" text="AttackRecoil"
+                         fx:id="colAttackRecoil"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="60.0" text="Cost" fx:id="colCost"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="40.0" text="Rarity" fx:id="colRarity"/>
+            <TableColumn onEditCommit="#boolCellCommit" prefWidth="40.0" text="Purchasable" fx:id="colPurchasable"/>
+            <TableColumn onEditCommit="#intCellCommit" prefWidth="40.0" text="InventorySize" fx:id="colISize"/>
+        </columns>
+    </TableView>
+</AnchorPane>

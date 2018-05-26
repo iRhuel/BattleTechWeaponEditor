@@ -8,9 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - batch edit toggle
+- tabs for future feature expansion
+- support for melee weapons
+- working directory display at bottom
 
 ### Changed
 - all fields are now single and batch editable
+- batch edit now uses weapon name with '' +"s removed as search criteria for eligible batched items
+    - this will better support modded items, which might otherwise be missing WeaponSubType field or match with a vanilla weapon
+- re-enabled "smarter" sorting
+- "Toggle Stock" now filters on selection
+- columns visibility toggler is now an inline menu under "View"
+
+### Removed
+- removed "Filter" button, table now filters on subfilter selection
 
 ## [v0.1.2] - 2018-05-21
 
