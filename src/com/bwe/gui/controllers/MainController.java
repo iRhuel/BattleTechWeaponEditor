@@ -11,7 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -24,7 +24,6 @@ public class MainController {
     @FXML private Prefs prefs;
     @FXML private WeaponCollection list;
 
-    @FXML private AnchorPane weaponEditorTab;
     @FXML private MenuItem fileOpen;
     @FXML private MenuItem fileExit;
     @FXML private MenuItem editSave;
@@ -34,7 +33,7 @@ public class MainController {
     @FXML private MenuItem helpAbout;
     @FXML private Label workingDirDisplay;
 
-    private Stage mainStage;
+    @FXML private Stage mainStage;
 
     @FXML private WeaponEditorTabController weaponEditorTabController;
 
@@ -42,23 +41,9 @@ public class MainController {
     private void initialize() {
         prefs = new Prefs();
         list = new WeaponCollection(prefs.getWorkingDir());
-
-        loadWeaponEditorTab();
-
+        weaponEditorTabController.postInitSetup(this);
         workingDirDisplay.setText(prefs.getWorkingDir());
-        populateViewColumns();
-    }
-
-    private void loadWeaponEditorTab() {
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gui/fxml/weaponeditortab.fxml"));
-//            weaponEditorTabController = new WeaponEditorTabController(this);
-            weaponEditorTab.getChildren().setAll((AnchorPane)loader.load());
-            weaponEditorTabController = loader.getController();
-            weaponEditorTabController.postInitSetup(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        populateViewColumnsMenu();
     }
 
     public void fileOpen(ActionEvent actionEvent) {
@@ -77,7 +62,6 @@ public class MainController {
             list = new WeaponCollection(dir.getAbsolutePath());
             workingDirDisplay.setText(prefs.getWorkingDir());
         }
-
         weaponEditorTabController.populateTable();
     }
 
@@ -94,7 +78,7 @@ public class MainController {
     }
 
     public void editCreateBackup(ActionEvent actionEvent) {
-        String timeStamp = new SimpleDateFormat("dd.MM.yyyy-HH.mm").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd-HH.mm").format(new Date());
         String sampleFileName = "BWEBackup-" + timeStamp;
 
         File initDir = new File(prefs.getBackupDir());
@@ -130,11 +114,12 @@ public class MainController {
         File file = fChooser.showOpenDialog(mainStage);
 
         if (file != null) {
+            prefs.setBackupDir(file.getParent());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Restore Jsons from backup file?", ButtonType.YES, ButtonType.NO);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES)
-                list.restore(file);
+                list.restore(file, prefs.getWorkingDir());
         }
         list = new WeaponCollection(prefs.getWorkingDir());
         weaponEditorTabController.populateTable();
@@ -152,13 +137,16 @@ public class MainController {
         }
     }
 
-    private void populateViewColumns() {
-        TableColumn[] tableColumns = weaponEditorTabController.getTableColumns();
-        for (TableColumn column : tableColumns) {
-            ToggleButton tb = new ToggleButton(column.getText());
-            tb.setSelected(column.isVisible());
-            tb.setOnAction(event -> column.setVisible(tb.isSelected()));
-            CustomMenuItem cmi = new CustomMenuItem(tb);
+    private void populateViewColumnsMenu() {
+        for (TableColumn column : weaponEditorTabController.getDisplayTable().getColumns()) {
+            CheckBox cb = new CheckBox(column.getText());
+            cb.setSelected(column.isVisible());
+            cb.setTextFill(Color.BLACK);
+            cb.setOnAction(event -> {
+                column.setVisible(cb.isSelected());
+                prefs.setShowCol("show" + column.getText(), cb.isSelected());
+            });
+            CustomMenuItem cmi = new CustomMenuItem(cb);
             cmi.setHideOnClick(false);
             viewColumns.getItems().add(cmi);
         }

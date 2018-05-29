@@ -31,9 +31,9 @@
     </Menu>
   </MenuBar>
   <Label fx:id="workingDirDisplay" text="Working directory path should be here" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+  <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
     <Tab text="WeaponEditor">
-      <AnchorPane fx:id="weaponEditorTab" prefHeight="200.0" prefWidth="200.0" />
+      <fx:include fx:id="weaponEditorTab" source="weaponeditortab.fxml" />
     </Tab>
   </TabPane>
 </AnchorPane>

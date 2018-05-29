@@ -13,8 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class WeaponCollection {
 
@@ -88,33 +88,17 @@ public class WeaponCollection {
         }
     }
 
-    public void restore(File restoreFile) {
+    public void restore(File restoreFile, String workingDir) {
         try {
             JsonNode jsonNode = mapper.readTree(restoreFile);
-            ObjectNode objectNode = (ObjectNode) jsonNode;
-
-            for (File file : fileArrayList) {
-                writer.writeValue(file, objectNode.get(file.getName()));
+            Iterator<String> iterator = jsonNode.fieldNames();
+            while (iterator.hasNext()) {
+                String name = iterator.next();
+                if (jsonNode.get(name) != null)
+                    writer.writeValue(new File(workingDir + "\\" + name), jsonNode.get(name));
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Deprecated
-    public void print() {
-        DecimalFormat df = new DecimalFormat("#.##");
-        weaponSubList.sort(new IWeaponComparator());
-        System.out.format("\n%15s%7s%7s%7s%10s%7s%15s%15s%15s%15s", "weapon", "dmg", "stab", "heat",
-                "tonnage", "slots", "getDmgPerTon", "getDmgPerHeat", "getStbPerTon",
-                "getStbPerHeat");
-
-        for (Weapon wpn : weaponSubList) {
-            System.out.println();
-            System.out.format("%15s%7d%7d%7d%10s%7d%15s%15s%15s%15s", wpn.getDescription().getName(),
-                    wpn.getDmgAdjusted(), wpn.getStbAdjusted(), wpn.getHeatGenerated(), wpn.getTonnage(),
-                    wpn.getInventorySize(), df.format(wpn.getDmgPerTon()), df.format(wpn.getDmgPerHeat()),
-                    df.format(wpn.getStbPerTon()), df.format(wpn.getStbPerHeat()));
         }
     }
 
@@ -170,11 +154,11 @@ public class WeaponCollection {
                 break;
 
             case "BonusValueA":
-                wpn.adjustBonus(newStr, 1);
+                wpn.adjustBonus(newStr, 'A');
                 break;
 
             case "BonusValueB":
-                wpn.adjustBonus(newStr, 2);
+                wpn.adjustBonus(newStr, 'B');
                 break;
 
             case "Category":
@@ -221,32 +205,37 @@ public class WeaponCollection {
                 wpn.setAllowedLocations(newStr);
                 break;
 
-            case"DisallowedLocations":
+            case "DisallowedLocations":
                 wpn.setDisallowedLocations(newStr);
                 break;
         }
     }
 
     public void singleEdit(Weapon wpn, String field, Integer newInt) {
-        switch(field) {
+        switch (field) {
             case "Damage":
-                wpn.adjustDmg(newInt);
+                wpn.setDamage(newInt);
+                wpn.applyBonuses();
                 break;
 
             case "Instability":
-                wpn.adjustStb(newInt);
+                wpn.setInstability(newInt);
+                wpn.applyBonuses();
                 break;
 
             case "HeatDamage":
                 wpn.setHeatDamage(newInt);
+                wpn.applyBonuses();
                 break;
 
             case "AccuracyModifier":
-                wpn.adjustAcc(newInt);
+                wpn.setAccuracyModifier(newInt);
+                wpn.applyBonuses();
                 break;
 
             case "HeatGenerated":
-                wpn.adjustHeat(newInt);
+                wpn.setHeatGenerated(newInt);
+                wpn.applyBonuses();
                 break;
 
             case "MinRange":
@@ -272,16 +261,52 @@ public class WeaponCollection {
             case "InventorySize":
                 wpn.setInventorySize(newInt);
                 break;
+
+            case "StartingAmmoCapacity":
+                wpn.setStartingAmmoCapacity(newInt);
+                break;
+
+            case "OverheatedDamageMultiplier":
+                wpn.setOverheatedDamageMultiplier(newInt);
+                break;
+
+            case "EvasiveDamageMultiplier":
+                wpn.setEvasiveDamageMultiplier(newInt);
+                break;
+
+            case "EvasivePipsIgnored":
+                wpn.setEvasivePipsIgnored(newInt);
+                break;
+
+            case "DamageVariance":
+                wpn.setDamageVariance(newInt);
+                break;
+
+            case "ProjectilesPerShot":
+                wpn.setProjectilesPerShot(newInt);
+                break;
+
+            case "Cost":
+                wpn.getDescription().setCost(newInt);
+                break;
+
+            case "Rarity":
+                wpn.getDescription().setRarity(newInt);
+                break;
+
+            case "BattleValue":
+                wpn.setBattleValue(newInt);
+                break;
         }
     }
 
     public void singleEdit(Weapon wpn, String field, Double newDbl) {
         switch (field) {
-            case "Crit":
-                wpn.adjustCrit(newDbl);
-                break;
+            case "CriticalChanceModifier":
+                wpn.setCriticalChanceMultiplier(newDbl);
+                wpn.applyBonuses();
 
-            case "Tons":
+            case "Tonnage":
                 wpn.setTonnage(newDbl);
                 break;
         }
@@ -292,13 +317,25 @@ public class WeaponCollection {
             case "Purchasable":
                 wpn.getDescription().setPurchasable(newBool);
                 break;
+
+            case "AOECapable":
+                wpn.setAOECapable(newBool);
+                break;
+
+            case "IndirectFireCapable":
+                wpn.setIndirectFireCapable(newBool);
+                break;
+
+            case "CriticalComponent":
+                wpn.setCriticalComponent(newBool);
+                break;
         }
     }
 
     public void batchEdit(Weapon item, String field, String newStr) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
-            if (wpn.getDescription().getName().contains(name)) {
+            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newStr);
             }
         }
@@ -307,7 +344,7 @@ public class WeaponCollection {
     public void batchEdit(Weapon item, String field, Integer newInt) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
-            if (wpn.getDescription().getName().contains(name)) {
+            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newInt);
             }
         }
@@ -316,7 +353,7 @@ public class WeaponCollection {
     public void batchEdit(Weapon item, String field, Double newDbl) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
-            if (wpn.getDescription().getName().contains(name)) {
+            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newDbl);
             }
         }
@@ -325,7 +362,7 @@ public class WeaponCollection {
     public void batchEdit(Weapon item, String field, Boolean newBool) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
-            if (wpn.getDescription().getName().contains(name)) {
+            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newBool);
             }
         }

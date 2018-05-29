@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - re-enabled "smarter" sorting
 - "Toggle Stock" now filters on selection
 - columns visibility toggler is now an inline menu under "View"
+- re-enabled TableViewContextMenu with custom solution (from Dan Newton)
 
 ### Removed
 - removed "Filter" button, table now filters on subfilter selection

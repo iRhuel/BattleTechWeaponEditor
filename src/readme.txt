@@ -28,13 +28,11 @@ EDITOR
 
 - Weapons are selected for batch editing by 'Name' field with all " +" substrings removed; all weapons sharing the base weapon's name will have their base parameter set to your desired value to maintain continuity, then + items will have their bonus modifiers applied automatically.
 
-- Changes to either stat bonus will autocorrect the appropriate parameters on assignment. Currently, the editor supports bonuses for: Dmg., Acc., Crit., Stb.Dmg., and Heat (I have not actually tested Heat as it doesn't exist as a vanilla bonus, but it should work exactly the same as the others).
+- Changes to either stat bonus will autocorrect the appropriate parameters on assignment. Currently, the editor supports bonuses for: " Dmg.", " Acc.", " Crit.", " Stb.Dmg.", " Heat", and "Dmg. (H)". (I have not actually tested Heat as it doesn't exist as a vanilla bonus, but it should work exactly the same as the others).
 
 - For vanilla items with missing values (e.g melee weapons), do not try to assign values to fields that did not already have a pre-existing value. The game may freak out...
 
-*for weapons that fire multiple projectiles in a single attack (LRMs, SRMs, MachineGun), the value displayed is per volley. HOWEVER, when editing the damage and instability parameters for these items, make sure to enter the desired value PER PROJECTILE, NOT PER VOLLEY.
-
-**when reassigning stat bonuses, stick to the vanilla game's syntax; that is, '+/-', then space, then the integer value of the bonus, then space, then the parameter abbreviation (with period). Failing to do so may result in the editor failing to recognize the appropriate parameter and not updating on batch fixes.
+- when reassigning stat bonuses, stick to the vanilla game's syntax; that is, '+/-', then space, then the integer value of the bonus, then space, then the parameter abbreviation (with period). Failing to do so may result in the editor failing to recognize the appropriate parameter and not updating on batch fixes.
 
 ---------------
 NOTES
@@ -47,8 +45,6 @@ NOTES
 
 ---------------
 KNOWN ISSUES
-
-- table does not auto-populate on startup
 
 ---------------
 LICENSE

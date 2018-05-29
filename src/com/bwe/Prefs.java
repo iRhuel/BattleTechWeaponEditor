@@ -7,22 +7,48 @@ import java.util.prefs.Preferences;
 public class Prefs {
 
     private Preferences preferences;
-
-    private String workingDir = "workingDir";
-    private String backupDir = "backupDir";
-
-    private String[] shouldShowCol = {
-            "showNameCol", "showMfrCol", "showDmgCol", "showStbCol", "showHDmgCol",
-            "showAccModCol", "showCritCol", "showHeatCol", "showTonsCol", "showBonusACol",
-            "showBonusBCol", "showDmgPerTonCol", "showDmgPerHeatCol", "showStbPerTonCol", "showStbPerHeatCol",
-            "showMinRangeCol", "showMaxRangeCol", "showRefireModCol", "showShotsWhenFiredCol", "showAttackRecoilCol",
-            "showCostCol", "showRarityCol", "showPurchasableCol", "showInventorySizeCol"
-    };
-
     private HashMap<String, Boolean> columnVisDefaults = new HashMap<>();
+    private HashMap<String, Integer> columnWidthDefaults = new HashMap<>();
 
     public Prefs() {
         preferences = Preferences.userRoot().node(this.getClass().getName());
+        setColVisDefaults();
+        setColWidthDefaults();
+    }
+
+    public String getWorkingDir() {
+        return preferences.get("workingDir", "C:\\");
+    }
+
+    public String getBackupDir() {
+        return preferences.get("backupDir", "C:\\");
+    }
+
+    public boolean getShowCol(String key) {
+        return preferences.getBoolean(key, columnVisDefaults.getOrDefault(key, true));
+    }
+
+    public int getColWidth(String key) {
+        return preferences.getInt(key, columnWidthDefaults.getOrDefault(key, 50));
+    }
+
+    public void setWorkingDir(String path) {
+        preferences.put("workingDir", path);
+    }
+
+    public void setBackupDir(String path) {
+        preferences.put("backupDir", path);
+    }
+
+    public void setShowCol(String key, boolean flag) {
+        preferences.putBoolean(key, flag);
+    }
+
+    public void setColWidth(String key, int width) {
+        preferences.putInt(key, width);
+    }
+
+    private void setColVisDefaults() {
         columnVisDefaults.put("showName", true);
         columnVisDefaults.put("showId", false);
         columnVisDefaults.put("showIcon", false);
@@ -77,28 +103,11 @@ public class Prefs {
         columnVisDefaults.put("showAmmoCategory", false);
     }
 
-    public String getWorkingDir() {
-        return preferences.get(workingDir, "C:\\");
-    }
-
-    public String getBackupDir() {
-        return preferences.get(backupDir, "C:\\");
-    }
-
-    public boolean getShowCol(String key) {
-        return preferences.getBoolean(key, columnVisDefaults.getOrDefault(key, true));
-    }
-
-    public void setWorkingDir(String path) {
-        preferences.put(workingDir, path);
-    }
-
-    public void setBackupDir(String path) {
-        preferences.put(backupDir, path);
-    }
-
-    public void setShowCol(String key, boolean flag) {
-        preferences.putBoolean(key, flag);
+    private void setColWidthDefaults() {
+        columnWidthDefaults.put("NameWidth", 90);
+        columnWidthDefaults.put("ManufacturerWidth", 100);
+        columnWidthDefaults.put("BonusValueAWidth", 85);
+        columnWidthDefaults.put("BonusValueBWidth", 85);
     }
 
     public void clear() throws BackingStoreException {

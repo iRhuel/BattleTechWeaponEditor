@@ -133,113 +133,77 @@ public class Weapon {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonIgnore
-    public void adjustDmg(Integer val) {
-        if (val == null) {
-            damage = null;
-            return;
-        }
-        if (bonusValueA.contains(" Dmg")) {
-            val += bonusValue(bonusValueA);
-        }
-        if (bonusValueB.contains(" Dmg")) {
-            val += bonusValue(bonusValueB);
-        }
-        damage = val;
+    public void applyBonuses() {
+        for (String subString : bonusValueA.split("\\|"))
+            applyBonus(subString);
+
+        for (String subString : bonusValueB.split("\\|"))
+            applyBonus(subString);
     }
 
     @JsonIgnore
-    public void adjustStb(int val) {
-        if (bonusValueA.contains(" Stb")) {
-            val += bonusValue(bonusValueA);
-        }
-        if (bonusValueB.contains(" Stb")) {
-            val += bonusValue(bonusValueB);
-        }
-        instability = val;
-    }
-
-    @JsonIgnore
-    public void adjustAcc(int val) {
-        if (bonusValueA.contains(" Acc")) {
-            val -= bonusValue(bonusValueA);
-        }
-        if (bonusValueB.contains(" Acc")) {
-            val -= bonusValue(bonusValueB);
-        }
-        accuracyModifier = val;
-    }
-
-    @JsonIgnore
-    public void adjustCrit(double val) {
-        if (bonusValueA.contains(" Crit")) {
-            val += bonusValue(bonusValueA) / 100D;
-        }
-        if (bonusValueB.contains(" Crit")) {
-            val += bonusValue(bonusValueB) / 100D;
-        }
-        criticalChanceMultiplier = val;
-    }
-
-    @JsonIgnore
-    public void adjustHeat(int val) {
-        if (bonusValueA.contains(" Heat")) {
-            val -= bonusValue(bonusValueA);
-        }
-        if (bonusValueB.contains(" Heat")) {
-            val -= bonusValue(bonusValueB);
-        }
-        heatGenerated = val;
-    }
-
-    @JsonIgnore
-    public void adjustBonus(String newBonus, int bonusNum) {
-        String oldBonus;
-
-        if (bonusNum == 1)
-            oldBonus = bonusValueA;
-        else if (bonusNum == 2)
-            oldBonus = bonusValueB;
-        else
-            oldBonus = "";
-
-        if (!oldBonus.equals("")) {
-            if (oldBonus.contains(" Dmg.") && damage != null) {
-                damage -= bonusValue(oldBonus);
-            }
-            if (oldBonus.contains(" Acc.") && accuracyModifier != null) {
-                accuracyModifier += bonusValue(oldBonus);
-            }
-            if (oldBonus.contains(" Heat") && heatGenerated != null) {
-                heatGenerated += bonusValue(oldBonus);
-            }
-            if (oldBonus.contains(" Stb.") && instability != null) {
-                instability -= bonusValue(oldBonus);
-            }
-            if (oldBonus.contains(" Crit.") && criticalChanceMultiplier != null) {
-                criticalChanceMultiplier -= bonusValue(oldBonus) / 100D;
-            }
-        }
-
-        if (bonusNum == 1)
+    public void adjustBonus(String newBonus, char whichBonus) {
+        if (whichBonus == 'A') {
+            for (String bonus : bonusValueA.split("\\|"))
+                removeBonus(bonus);
             bonusValueA = newBonus;
-        else if (bonusNum == 2)
-            bonusValueB = newBonus;
+        }
 
-        if (newBonus.contains(" Dmg.") && damage != null) {
-            damage += bonusValue(newBonus);
+        if (whichBonus == 'B') {
+            for (String bonus : bonusValueB.split("\\|"))
+                removeBonus(bonus);
+            bonusValueB = newBonus;
         }
-        if (newBonus.contains(" Acc.") && accuracyModifier != null) {
-            accuracyModifier -= bonusValue(newBonus);
+
+        for (String bonus : newBonus.split("\\|"))
+            applyBonus(bonus);
+    }
+
+    @JsonIgnore
+    private void applyBonus(String bonus) {
+        if (bonus.equals(""))
+            return;
+
+        if (bonus.contains(" Dmg.")) {
+            damage += bonusValue(bonus);
         }
-        if (newBonus.contains(" Heat") && heatGenerated != null) {
-            heatGenerated -= bonusValue(newBonus);
+        if (bonus.contains(" Stb.Dmg.")) {
+            instability += bonusValue(bonus);
         }
-        if (newBonus.contains(" Stb.") && instability != null) {
-            instability += bonusValue(newBonus);
+        if (bonus.contains(" Acc.")) {
+            accuracyModifier -= bonusValue(bonus);
         }
-        if (newBonus.contains(" Crit.") && criticalChanceMultiplier != null) {
-            criticalChanceMultiplier += bonusValue(newBonus) / 100D;
+        if (bonus.contains(" Crit.")) {
+            criticalChanceMultiplier += bonusValue(bonus) / 100D;
         }
+        if (bonus.contains(" Heat.")) {
+            heatGenerated -= bonusValue(bonus);
+        }
+        if (bonus.contains(" Dmg. (H)"))
+            heatDamage += bonusValue(bonus);
+    }
+
+    private void removeBonus(String bonus) {
+        if (bonus.equals(""))
+            return;
+
+        if (bonus.contains(" Dmg.")) {
+            damage -= bonusValue(bonus);
+        }
+        if (bonus.contains(" Stb.Dmg.")) {
+            instability -= bonusValue(bonus);
+        }
+        if (bonus.contains(" Acc.")) {
+            accuracyModifier += bonusValue(bonus);
+        }
+        if (bonus.contains(" Crit.")) {
+            criticalChanceMultiplier -= bonusValue(bonus) / 100D;
+        }
+        if (bonus.contains(" Heat.")) {
+            heatGenerated += bonusValue(bonus);
+        }
+        if (bonus.contains(" Dmg. (H)"))
+            heatDamage -= bonusValue(bonus);
     }
 
     @JsonIgnore
@@ -264,14 +228,14 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public Integer getDmgAdjusted() {
+    public Integer getDamagePerVolley() {
         if (damage == null || shotsWhenFired == null)
             return null;
         return damage * shotsWhenFired;
     }
 
     @JsonIgnore
-    public Integer getStbAdjusted() {
+    public Integer getInstabilityPerVolley() {
         if (instability == null || shotsWhenFired == null)
             return null;
         return instability * shotsWhenFired;
@@ -279,30 +243,30 @@ public class Weapon {
 
     @JsonIgnore
     public String getDmgPerHeat() {
-        if (getDmgAdjusted() == null || heatGenerated == null)
+        if (getDamagePerVolley() == null || heatGenerated == null)
             return "N/A";
-        return round((double) getDmgAdjusted() / heatGenerated);
+        return round((double) getDamagePerVolley() / heatGenerated);
     }
 
     @JsonIgnore
     public String getDmgPerTon() {
-        if (getDmgAdjusted() == null || tonnage == null)
+        if (getDamagePerVolley() == null || tonnage == null)
             return "N/A";
-        return round((double) getDmgAdjusted() / tonnage);
+        return round((double) getDamagePerVolley() / tonnage);
     }
 
     @JsonIgnore
     public String getStbPerHeat() {
-        if (getStbAdjusted() == null || heatGenerated == null)
+        if (getInstabilityPerVolley() == null || heatGenerated == null)
             return "N/A";
-        return round((double) getStbAdjusted() / heatGenerated);
+        return round((double) getInstabilityPerVolley() / heatGenerated);
     }
 
     @JsonIgnore
     public String getStbPerTon() {
-        if (getStbAdjusted() == null || tonnage == null)
+        if (getInstabilityPerVolley() == null || tonnage == null)
             return "N/A";
-        return round((double) getStbAdjusted() / tonnage);
+        return round((double) getInstabilityPerVolley() / tonnage);
     }
 
     @JsonIgnore
