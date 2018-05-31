@@ -20,66 +20,132 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class WeaponEditorTabController {
-    @FXML private ComboBox<String> filterComboBox;
-    @FXML private CheckBox toggleStock;
-    @FXML private CheckBox toggleBatch;
-    @FXML private ListView<String> filterListBox;
+    @FXML
+    private ComboBox<String> filterComboBox;
+    @FXML
+    private CheckBox toggleStock;
+    @FXML
+    private CheckBox toggleBatch;
+    @FXML
+    private ListView<String> filterListBox;
 
-    @FXML private TableView<Weapon> displayTable;
-    @FXML private TableColumn<Weapon, String> colName;
-    @FXML private TableColumn<Weapon, String> colCat;
-    @FXML private TableColumn<Weapon, String> colType;
-    @FXML private TableColumn<Weapon, String> colWpnSubType;
-    @FXML private TableColumn<Weapon, String> colMfr;
-    @FXML private TableColumn<Weapon, String> colAmmoCat;
-    @FXML private TableColumn<Weapon, Integer> colAmmoCap;
-    @FXML private TableColumn<Weapon, Integer> colDmg;
-    @FXML private TableColumn<Weapon, Integer> colStb;
-    @FXML private TableColumn<Weapon, Integer> colDmgAdj;
-    @FXML private TableColumn<Weapon, Integer> colStbAdj;
-    @FXML private TableColumn<Weapon, String> colDmgPerTon;
-    @FXML private TableColumn<Weapon, String> colDmgPerHeat;
-    @FXML private TableColumn<Weapon, String> colStbPerTon;
-    @FXML private TableColumn<Weapon, String> colStbPerHeat;
-    @FXML private TableColumn<Weapon, Integer> colHeatDmg;
-    @FXML private TableColumn<Weapon, Integer> colAccMod;
-    @FXML private TableColumn<Weapon, Double> colCrit;
-    @FXML private TableColumn<Weapon, Integer> colHeat;
-    @FXML private TableColumn<Weapon, Double> colTons;
-    @FXML private TableColumn<Weapon, String> colBonusA;
-    @FXML private TableColumn<Weapon, String> colBOnusB;
-    @FXML private TableColumn<Weapon, Integer> colEvasiveDmgMulti;
-    @FXML private TableColumn<Weapon, Integer> colPipsIgnored;
-    @FXML private TableColumn<Weapon, Integer> colDmgVar;
-    @FXML private TableColumn<Weapon, Boolean> colAOECapable;
-    @FXML private TableColumn<Weapon, Boolean> colIndirectCapable;
-    @FXML private TableColumn<Weapon, Integer> colOverHeatDmgMulti;
-    @FXML private TableColumn<Weapon, Integer> colMinRange;
-    @FXML private TableColumn<Weapon, Integer> colMaxRange;
-    @FXML private TableColumn<Weapon, Integer> colRefireMod;
-    @FXML private TableColumn<Weapon, Integer> colShotsWhenFired;
-    @FXML private TableColumn<Weapon, Integer> colAttackRecoil;
-    @FXML private TableColumn<Weapon, Integer> colProjectilesPerShot;
-    @FXML private TableColumn<Weapon, String> colWpnEffectId;
-    @FXML private TableColumn<Weapon, Integer> colCost;
-    @FXML private TableColumn<Weapon, Integer> colRarity;
-    @FXML private TableColumn<Weapon, Boolean> colPurchasable;
-    @FXML private TableColumn<Weapon, String> colModel;
-    @FXML private TableColumn<Weapon, String> colId;
-    @FXML private TableColumn<Weapon, String> colDetails;
-    @FXML private TableColumn<Weapon, String> colIcon;
-    @FXML private TableColumn<Weapon, String> colComponentType;
-    @FXML private TableColumn<Weapon, String> colComponentSubType;
-    @FXML private TableColumn<Weapon, String> colPrefabId;
-    @FXML private TableColumn<Weapon, Integer> colBattleValue;
-    @FXML private TableColumn<Weapon, Integer> colISize;
-    @FXML private TableColumn<Weapon, String> colAllowedLocations;
-    @FXML private TableColumn<Weapon, String> colDisallowedLocations;
-    @FXML private TableColumn<Weapon, Boolean> colCriticalComponent;
+    @FXML
+    private TableView<Weapon> displayTable;
+    @FXML
+    private TableColumn<Weapon, String> colName;
+    @FXML
+    private TableColumn<Weapon, String> colCat;
+    @FXML
+    private TableColumn<Weapon, String> colType;
+    @FXML
+    private TableColumn<Weapon, String> colWpnSubType;
+    @FXML
+    private TableColumn<Weapon, String> colMfr;
+    @FXML
+    private TableColumn<Weapon, String> colAmmoCat;
+    @FXML
+    private TableColumn<Weapon, Integer> colAmmoCap;
+    @FXML
+    private TableColumn<Weapon, Integer> colDmg;
+    @FXML
+    private TableColumn<Weapon, Integer> colStb;
+    @FXML
+    private TableColumn<Weapon, Integer> colDmgAdj;
+    @FXML
+    private TableColumn<Weapon, Integer> colStbAdj;
+    @FXML
+    private TableColumn<Weapon, String> colDmgPerTon;
+    @FXML
+    private TableColumn<Weapon, String> colDmgPerHeat;
+    @FXML
+    private TableColumn<Weapon, String> colStbPerTon;
+    @FXML
+    private TableColumn<Weapon, String> colStbPerHeat;
+    @FXML
+    private TableColumn<Weapon, Integer> colHeatDmg;
+    @FXML
+    private TableColumn<Weapon, Integer> colAccMod;
+    @FXML
+    private TableColumn<Weapon, Double> colCrit;
+    @FXML
+    private TableColumn<Weapon, Integer> colHeat;
+    @FXML
+    private TableColumn<Weapon, Double> colTons;
+    @FXML
+    private TableColumn<Weapon, String> colBonusA;
+    @FXML
+    private TableColumn<Weapon, String> colBOnusB;
+    @FXML
+    private TableColumn<Weapon, Integer> colEvasiveDmgMulti;
+    @FXML
+    private TableColumn<Weapon, Integer> colPipsIgnored;
+    @FXML
+    private TableColumn<Weapon, Integer> colDmgVar;
+    @FXML
+    private TableColumn<Weapon, Boolean> colAOECapable;
+    @FXML
+    private TableColumn<Weapon, Boolean> colIndirectCapable;
+    @FXML
+    private TableColumn<Weapon, Integer> colOverHeatDmgMulti;
+    @FXML
+    private TableColumn<Weapon, Integer> colMinRange;
+    @FXML
+    private TableColumn<Weapon, Integer> colMaxRange;
+
+    // TODO: make rangeSplit impl less retarded
+    @FXML
+    private TableColumn<Weapon, Integer> colShortRangeSplit;
+    @FXML
+    private TableColumn<Weapon, Integer> colMidRangeSplit;
+    @FXML
+    private TableColumn<Weapon, Integer> colLongRangeSplit;
+//    @FXML
+//    private TableColumn<Weapon, List> colRangeSplit;
+    @FXML
+    private TableColumn<Weapon, Integer> colRefireMod;
+    @FXML
+    private TableColumn<Weapon, Integer> colShotsWhenFired;
+    @FXML
+    private TableColumn<Weapon, Integer> colAttackRecoil;
+    @FXML
+    private TableColumn<Weapon, Integer> colProjectilesPerShot;
+    @FXML
+    private TableColumn<Weapon, String> colWpnEffectId;
+    @FXML
+    private TableColumn<Weapon, Integer> colCost;
+    @FXML
+    private TableColumn<Weapon, Integer> colRarity;
+    @FXML
+    private TableColumn<Weapon, Boolean> colPurchasable;
+    @FXML
+    private TableColumn<Weapon, String> colModel;
+    @FXML
+    private TableColumn<Weapon, String> colId;
+    @FXML
+    private TableColumn<Weapon, String> colDetails;
+    @FXML
+    private TableColumn<Weapon, String> colIcon;
+    @FXML
+    private TableColumn<Weapon, String> colComponentType;
+    @FXML
+    private TableColumn<Weapon, String> colComponentSubType;
+    @FXML
+    private TableColumn<Weapon, String> colPrefabId;
+    @FXML
+    private TableColumn<Weapon, Integer> colBattleValue;
+    @FXML
+    private TableColumn<Weapon, Integer> colISize;
+    @FXML
+    private TableColumn<Weapon, String> colAllowedLocations;
+    @FXML
+    private TableColumn<Weapon, String> colDisallowedLocations;
+    @FXML
+    private TableColumn<Weapon, Boolean> colCriticalComponent;
 
     private MainController mainController;
 
-    @FXML private void initialize() {
+    @FXML
+    private void initialize() {
         filterComboBox.getItems().addAll("All", "Category", "Type", "WeaponSubType");
         toggleStock.setOnAction(event -> populateTable());
         setCellValueFactories();
@@ -96,32 +162,6 @@ public class WeaponEditorTabController {
     private void setCellValueFactories() {
         for (TableColumn column : displayTable.getColumns())
             column.setCellValueFactory(new PropertyValueFactory<>(column.getText()));
-//        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        colMfr.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-//        colDmg.setCellValueFactory(new PropertyValueFactory<>("damage"));
-//        colDmgAdj.setCellValueFactory(new PropertyValueFactory<>("damageAdjusted"));
-//        colStb.setCellValueFactory(new PropertyValueFactory<>("instability"));
-//        colStbAdj.setCellValueFactory(new PropertyValueFactory<>("instabilityAdjusted"));
-//        colHeatDmg.setCellValueFactory(new PropertyValueFactory<>("heatDamage"));
-//        colAccMod.setCellValueFactory(new PropertyValueFactory<>("accuracyModifier"));
-//        colCrit.setCellValueFactory(new PropertyValueFactory<>("criticalChanceMultiplier"));
-//        colHeat.setCellValueFactory(new PropertyValueFactory<>("heatGenerated"));
-//        colTons.setCellValueFactory(new PropertyValueFactory<>("tonnage"));
-//        colBonusA.setCellValueFactory(new PropertyValueFactory<>("bonusValueA"));
-//        colBOnusB.setCellValueFactory(new PropertyValueFactory<>("bonusValueB"));
-//        colDmgPerTon.setCellValueFactory(new PropertyValueFactory<>("dmgPerTon"));
-//        colDmgPerHeat.setCellValueFactory(new PropertyValueFactory<>("dmgPerHeat"));
-//        colStbPerTon.setCellValueFactory(new PropertyValueFactory<>("stbPerTon"));
-//        colStbPerHeat.setCellValueFactory(new PropertyValueFactory<>("stbPerHeat"));
-//        colMinRange.setCellValueFactory(new PropertyValueFactory<>("minRange"));
-//        colMaxRange.setCellValueFactory(new PropertyValueFactory<>("maxRange"));
-//        colRefireMod.setCellValueFactory(new PropertyValueFactory<>("refireModifier"));
-//        colShotsWhenFired.setCellValueFactory(new PropertyValueFactory<>("shotsWhenFired"));
-//        colAttackRecoil.setCellValueFactory(new PropertyValueFactory<>("attackRecoil"));
-//        colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
-//        colRarity.setCellValueFactory(new PropertyValueFactory<>("rarity"));
-//        colPurchasable.setCellValueFactory(new PropertyValueFactory<>("purchasable"));
-//        colISize.setCellValueFactory(new PropertyValueFactory<>("inventorySize"));
     }
 
     private void setCellFactories() {
@@ -149,6 +189,9 @@ public class WeaponEditorTabController {
         colIndirectCapable.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
         colOverHeatDmgMulti.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colMinRange.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colShortRangeSplit.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colMidRangeSplit.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        colLongRangeSplit.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colMaxRange.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colRefireMod.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         colShotsWhenFired.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -179,6 +222,12 @@ public class WeaponEditorTabController {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                     mainController.getPrefs().setColWidth(tableColumn.getText() + "Width", newValue.intValue());
+                }
+            });
+            tableColumn.visibleProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    mainController.getPrefs().setShowCol("show"+tableColumn.getText(), newValue);
                 }
             });
             tableColumn.setVisible(mainController.getPrefs().getShowCol("show" + tableColumn.getText()));
@@ -235,7 +284,7 @@ public class WeaponEditorTabController {
         if (toggleBatch.isSelected())
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
-            mainController.getList().singleEdit(wpn,cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
+            mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         displayTable.refresh();
     }
 
@@ -254,6 +303,16 @@ public class WeaponEditorTabController {
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
             mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
+        displayTable.refresh();
+    }
+
+    public void rangeSplitCellCommit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
+        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        Integer rangeSplitNum = Integer.parseInt(cellEditEvent.getTableColumn().getText().replaceFirst("RangeSplit", ""));
+        if (toggleBatch.isSelected())
+            mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue(), rangeSplitNum);
+        else
+            mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue(), rangeSplitNum);
         displayTable.refresh();
     }
 

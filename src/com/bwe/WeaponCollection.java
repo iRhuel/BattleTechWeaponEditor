@@ -242,6 +242,18 @@ public class WeaponCollection {
                 wpn.setMinRange(newInt);
                 break;
 
+            case "ShortRangeSplit":
+                wpn.setShortRangeSplit(newInt);
+                break;
+
+            case "MidRangeSplit":
+                wpn.setMidRangeSplit(newInt);
+                break;
+
+            case "LongRangeSplit":
+                wpn.setLongRangeSplit(newInt);
+                break;
+
             case "MaxRange":
                 wpn.setMaxRange(newInt);
                 break;
@@ -332,6 +344,23 @@ public class WeaponCollection {
         }
     }
 
+    // TODO: remove once better rangeSplit solution found
+    public void singleEdit(Weapon wpn, String field, Integer newInt, Integer rangeSplitNum) {
+        switch(rangeSplitNum) {
+            case 0:
+                wpn.setShortRangeSplit(newInt);
+                break;
+
+            case 1:
+                wpn.setMidRangeSplit(newInt);
+                break;
+
+            case 2:
+                wpn.setLongRangeSplit(newInt);
+                break;
+        }
+    }
+
     public void batchEdit(Weapon item, String field, String newStr) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
@@ -364,6 +393,16 @@ public class WeaponCollection {
         for (Weapon wpn : weaponArrayList) {
             if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newBool);
+            }
+        }
+    }
+
+    // TODO: remove once better rangeSplit solution found
+    public void batchEdit(Weapon item, String field, Integer newInt, Integer rangeSplitNum) {
+        String name = item.getDescription().getName().replaceAll(" \\+", "");
+        for (Weapon wpn : weaponArrayList) {
+            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
+                singleEdit(wpn, field, newInt, rangeSplitNum);
             }
         }
     }

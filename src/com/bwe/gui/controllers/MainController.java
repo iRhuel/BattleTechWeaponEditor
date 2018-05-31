@@ -144,7 +144,6 @@ public class MainController {
             cb.setTextFill(Color.BLACK);
             cb.setOnAction(event -> {
                 column.setVisible(cb.isSelected());
-                prefs.setShowCol("show" + column.getText(), cb.isSelected());
             });
             CustomMenuItem cmi = new CustomMenuItem(cb);
             cmi.setHideOnClick(false);

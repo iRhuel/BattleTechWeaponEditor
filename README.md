@@ -44,6 +44,8 @@ You will need at least [Java 10 JRE](http://www.oracle.com/technetwork/java/java
 
 - Changes to either stat bonus will autocorrect the appropriate parameters on assignment. Currently, the editor supports bonuses for: " Dmg.", " Acc.", " Crit.", " Stb.Dmg.", " Heat", and "Dmg. (H)". (I have not actually tested Heat as it doesn't exist as a vanilla bonus, but it should work exactly the same as the others).
 
+- When including multiple bonus tags in a single field, please separate them with a '|' (without the quotes).
+
 - For vanilla items with missing values (e.g melee weapons), do not try to assign values to fields that did not already have a pre-existing value. The game may freak out...
 
 - when reassigning stat bonuses, stick to the vanilla game's syntax; that is, '+/-', then space, then the integer value of the bonus, then space, then the parameter abbreviation (with period). Failing to do so may result in the editor failing to recognize the appropriate parameter and not updating on batch fixes.

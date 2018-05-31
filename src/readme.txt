@@ -2,7 +2,7 @@
 ABOUT
 
 author: iRhuel
-version: 0.1.2
+version: 0.2.1
 
 ---------------
 MENU

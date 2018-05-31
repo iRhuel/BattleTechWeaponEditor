@@ -222,9 +222,6 @@ public class Weapon {
     private String round(double value) {
         DecimalFormat df = new DecimalFormat("#.##");
         return df.format(value);
-//        BigDecimal bd = new BigDecimal(value);
-//        bd = bd.setScale(2, RoundingMode.HALF_UP);
-//        return bd.doubleValue();
     }
 
     @JsonIgnore
@@ -292,6 +289,36 @@ public class Weapon {
     @JsonIgnore
     public Boolean getPurchasable() {
         return description.getPurchasable();
+    }
+
+    @JsonIgnore
+    public Integer getShortRangeSplit() {
+        return rangeSplit.get(0);
+    }
+
+    @JsonIgnore
+    public Integer getMidRangeSplit() {
+        return rangeSplit.get(1);
+    }
+
+    @JsonIgnore
+    public Integer getLongRangeSplit() {
+        return rangeSplit.get(2);
+    }
+
+    @JsonIgnore
+    public void setShortRangeSplit(Integer integer) {
+        rangeSplit.set(0, integer);
+    }
+
+    @JsonIgnore
+    public void setMidRangeSplit(Integer integer) {
+        rangeSplit.set(1, integer);
+    }
+
+    @JsonIgnore
+    public void setLongRangeSplit(Integer integer) {
+        rangeSplit.set(2, integer);
     }
 
     @JsonProperty("Category")

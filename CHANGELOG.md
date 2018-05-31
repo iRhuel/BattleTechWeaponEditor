@@ -6,11 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.1] - 2018-05-30
+
+### Added
+- stopgap solution for RangeSplit, until a more elegant solution can be implemented
+
+### Changed
+- minor preferences saving optimization
+
+### Fixed
+- bonus string parser now correctly detects " Dmg. (H)" bonus
+- faulty restore method logic, causing only files already detected in working directory to be restored. Should now properly restore all files (and only those files) present in backup file, and leave unbacked files untouched.
+- inline column visibility toggle button now correctly saves column visibility state to preferences
+
+## [v0.2.0] - 2018-05-29
+
 ### Added
 - batch edit toggle
 - tabs for future feature expansion
 - support for melee weapons
 - working directory display at bottom
+- support for multiple bonus values in a single field
 
 ### Changed
 - all fields are now single and batch editable

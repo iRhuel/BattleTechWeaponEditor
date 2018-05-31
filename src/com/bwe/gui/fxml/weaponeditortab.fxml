@@ -55,6 +55,9 @@
             <TableColumn onEditCommit="#boolCellCommit" text="AOECapable" fx:id="colAOECapable"/>
             <TableColumn onEditCommit="#boolCellCommit" text="IndirectFireCapable" fx:id="colIndirectCapable"/>
             <TableColumn onEditCommit="#intCellCommit" text="MinRange" fx:id="colMinRange"/>
+            <TableColumn onEditCommit="#intCellCommit" text="ShortRangeSplit" fx:id="colShortRangeSplit"/>
+            <TableColumn onEditCommit="#intCellCommit" text="MidRangeSplit" fx:id="colMidRangeSplit"/>
+            <TableColumn onEditCommit="#intCellCommit" text="LongRangeSplit" fx:id="colLongRangeSplit"/>
             <TableColumn onEditCommit="#intCellCommit" text="MaxRange" fx:id="colMaxRange"/>
             <TableColumn onEditCommit="#intCellCommit" text="RefireModifier" fx:id="colRefireMod"/>
             <TableColumn onEditCommit="#intCellCommit" text="ShotsWhenFired" fx:id="colShotsWhenFired"/>
