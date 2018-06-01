@@ -29,7 +29,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = new FXMLLoader(getClass().getResource("gui/fxml/main.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("gui/fxml/Main.fxml")).load();
         primaryStage.setTitle("BattleTech Weapon Editor");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

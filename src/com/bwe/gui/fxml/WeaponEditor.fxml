@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
-            fx:controller="com.bwe.gui.controllers.WeaponEditorTabController">
+            fx:controller="com.bwe.gui.controllers.WeaponEditorController">
     <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <ComboBox fx:id="filterComboBox" onAction="#filterTypeSelected" prefHeight="21.0" prefWidth="150.0"
@@ -23,7 +23,7 @@
                   text="Batch Edit" textAlignment="CENTER"/>
         <ListView id="filterList" fx:id="filterListBox" onMouseClicked="#subFilterClicked" VBox.vgrow="ALWAYS"/>
     </VBox>
-    <TableView fx:id="displayTable" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0"
+    <TableView fx:id="table" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
             <TableColumn onEditCommit="#strCellCommit" text="Name" fx:id="colName"/>

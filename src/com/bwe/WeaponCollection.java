@@ -9,6 +9,7 @@ import com.bwe.pojo.weapon.Weapon;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,7 +41,6 @@ public class WeaponCollection {
                         weaponArrayList.add(wpn);
                     }
                 } catch (Exception e) {
-                    System.out.println("Error loading " + file.getName());
                     e.printStackTrace();
                 }
             }
@@ -60,6 +60,14 @@ public class WeaponCollection {
                 return true;
 
         return false;
+    }
+
+    public void openFile(Weapon wpn) {
+        try {
+            Desktop.getDesktop().open(fileArrayList.get(weaponArrayList.indexOf(wpn)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void write() {
@@ -344,23 +352,6 @@ public class WeaponCollection {
         }
     }
 
-    // TODO: remove once better rangeSplit solution found
-    public void singleEdit(Weapon wpn, String field, Integer newInt, Integer rangeSplitNum) {
-        switch(rangeSplitNum) {
-            case 0:
-                wpn.setShortRangeSplit(newInt);
-                break;
-
-            case 1:
-                wpn.setMidRangeSplit(newInt);
-                break;
-
-            case 2:
-                wpn.setLongRangeSplit(newInt);
-                break;
-        }
-    }
-
     public void batchEdit(Weapon item, String field, String newStr) {
         String name = item.getDescription().getName().replaceAll(" \\+", "");
         for (Weapon wpn : weaponArrayList) {
@@ -393,16 +384,6 @@ public class WeaponCollection {
         for (Weapon wpn : weaponArrayList) {
             if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
                 singleEdit(wpn, field, newBool);
-            }
-        }
-    }
-
-    // TODO: remove once better rangeSplit solution found
-    public void batchEdit(Weapon item, String field, Integer newInt, Integer rangeSplitNum) {
-        String name = item.getDescription().getName().replaceAll(" \\+", "");
-        for (Weapon wpn : weaponArrayList) {
-            if (wpn.getDescription().getName().replaceAll(" \\+", "").equals(name)) {
-                singleEdit(wpn, field, newInt, rangeSplitNum);
             }
         }
     }

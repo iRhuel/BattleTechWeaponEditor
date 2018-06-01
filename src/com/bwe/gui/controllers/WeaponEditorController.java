@@ -1,25 +1,38 @@
 package com.bwe.gui.controllers;
 
+import com.bwe.Main;
 import com.bwe.enums.Category;
 import com.bwe.enums.Type;
 import com.bwe.enums.WeaponSubType;
 import com.bwe.gui.TableViewContextMenuHelper;
 import com.bwe.pojo.weapon.Weapon;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.converter.BooleanStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-public class WeaponEditorTabController {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class WeaponEditorController {
     @FXML
     private ComboBox<String> filterComboBox;
     @FXML
@@ -30,7 +43,7 @@ public class WeaponEditorTabController {
     private ListView<String> filterListBox;
 
     @FXML
-    private TableView<Weapon> displayTable;
+    private TableView<Weapon> table;
     @FXML
     private TableColumn<Weapon, String> colName;
     @FXML
@@ -91,7 +104,6 @@ public class WeaponEditorTabController {
     private TableColumn<Weapon, Integer> colMinRange;
     @FXML
     private TableColumn<Weapon, Integer> colMaxRange;
-
     // TODO: make rangeSplit impl less retarded
     @FXML
     private TableColumn<Weapon, Integer> colShortRangeSplit;
@@ -99,8 +111,6 @@ public class WeaponEditorTabController {
     private TableColumn<Weapon, Integer> colMidRangeSplit;
     @FXML
     private TableColumn<Weapon, Integer> colLongRangeSplit;
-//    @FXML
-//    private TableColumn<Weapon, List> colRangeSplit;
     @FXML
     private TableColumn<Weapon, Integer> colRefireMod;
     @FXML
@@ -143,6 +153,7 @@ public class WeaponEditorTabController {
     private TableColumn<Weapon, Boolean> colCriticalComponent;
 
     private MainController mainController;
+//    private List<TableColumn<Weapon, ?>> tableColumnsFinal;
 
     @FXML
     private void initialize() {
@@ -154,13 +165,16 @@ public class WeaponEditorTabController {
 
     void postInitSetup(MainController mainController) {
         this.mainController = mainController;
-        setVisibleColumns();
-        TableViewContextMenuHelper helper = new TableViewContextMenuHelper(displayTable);
+//        tableColumnsFinal = Collections.unmodifiableList(new ArrayList<>(table.getColumns()));
+        TableViewContextMenuHelper helper = new TableViewContextMenuHelper(table);
+        setTablePrefs();
+        setTableListeners();
+        setTableContextMenu();
         populateTable();
     }
 
     private void setCellValueFactories() {
-        for (TableColumn column : displayTable.getColumns())
+        for (TableColumn column : table.getColumns())
             column.setCellValueFactory(new PropertyValueFactory<>(column.getText()));
     }
 
@@ -215,29 +229,88 @@ public class WeaponEditorTabController {
         colCriticalComponent.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
     }
 
-    private void setVisibleColumns() {
-        for (TableColumn tableColumn : displayTable.getColumns()) {
+    private void setTablePrefs() {
+        for (TableColumn tableColumn : table.getColumns()) {
             tableColumn.setPrefWidth(mainController.getPrefs().getColWidth(tableColumn.getText() + "Width"));
+            tableColumn.setVisible(mainController.getPrefs().getShowCol("show" + tableColumn.getText()));
+        }
+    }
+
+    private void setTableListeners() {
+        for (TableColumn tableColumn : table.getColumns()) {
+
+            // width listener
             tableColumn.widthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                     mainController.getPrefs().setColWidth(tableColumn.getText() + "Width", newValue.intValue());
                 }
             });
+
+            // visibility listener
             tableColumn.visibleProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    mainController.getPrefs().setShowCol("show"+tableColumn.getText(), newValue);
+                    mainController.getPrefs().setShowCol("show" + tableColumn.getText(), newValue);
                 }
             });
-            tableColumn.setVisible(mainController.getPrefs().getShowCol("show" + tableColumn.getText()));
         }
+
+        // order listener
+//        table.getColumns().addListener(new ListChangeListener<TableColumn<Weapon, ?>>() {
+//            @Override
+//            public void onChanged(Change<? extends TableColumn<Weapon, ?>> c) {
+//                while (c.next())
+//                    if (c.wasRemoved()) {
+//                        ObservableList<TableColumn<Weapon, ?>> columns = table.getColumns();
+//                        int[] columnIndexes = new int[columns.size()];
+//                        for (int i = 0; i < columns.size(); ++i) {
+//                            columnIndexes[i] = tableColumnsFinal.indexOf(columns.get(i));
+//                        }
+//                    }
+//            }
+//        });
+    }
+
+    private void setTableContextMenu() {
+        table.setRowFactory(new Callback<TableView<Weapon>, TableRow<Weapon>>() {
+            @Override
+            public TableRow<Weapon> call(TableView<Weapon> param) {
+                final TableRow<Weapon> row = new TableRow<>();
+                final ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem openFile = new MenuItem("Open File");
+                openFile.setOnAction(event -> mainController.getList().openFile(row.getItem()));
+
+                MenuItem openTagEditor = new MenuItem("Edit ComponentTags");
+                openTagEditor.setOnAction(event -> {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("gui/fxml/TagEditor.fxml"));
+                        Parent root = loader.load();
+                        TagEditorController controller = loader.getController();
+                        controller.setup(row.getItem());
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("Select Weapon Tags");
+                        stage.showAndWait();
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                contextMenu.getItems().addAll(openFile, openTagEditor);
+                // only display context menu for non-null items:
+                row.contextMenuProperty().bind(Bindings.when(Bindings.isNotNull(row.itemProperty())).then(contextMenu).otherwise((ContextMenu)null));
+                return row;
+            }
+        });
     }
 
     void populateTable() {
         mainController.getList().filter(filterComboBox.getValue(), filterListBox.getSelectionModel().getSelectedItem(), toggleStock.isSelected());
         ObservableList<Weapon> observableList = FXCollections.observableList(mainController.getList().getWeaponSubList());
-        displayTable.setItems(observableList);
+        table.setItems(observableList);
     }
 
     public void filterTypeSelected(ActionEvent actionEvent) {
@@ -271,52 +344,42 @@ public class WeaponEditorTabController {
     }
 
     public void strCellCommit(TableColumn.CellEditEvent<Weapon, String> cellEditEvent) {
-        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        Weapon wpn = table.getSelectionModel().getSelectedItem();
         if (toggleBatch.isSelected())
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
             mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
-        displayTable.refresh();
+        table.refresh();
     }
 
     public void intCellCommit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
-        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        Weapon wpn = table.getSelectionModel().getSelectedItem();
         if (toggleBatch.isSelected())
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
             mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
-        displayTable.refresh();
+        table.refresh();
     }
 
     public void dblCellCommit(TableColumn.CellEditEvent<Weapon, Double> cellEditEvent) {
-        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        Weapon wpn = table.getSelectionModel().getSelectedItem();
         if (toggleBatch.isSelected())
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
             mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
-        displayTable.refresh();
+        table.refresh();
     }
 
     public void boolCellCommit(TableColumn.CellEditEvent<Weapon, Boolean> cellEditEvent) {
-        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
+        Weapon wpn = table.getSelectionModel().getSelectedItem();
         if (toggleBatch.isSelected())
             mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
         else
             mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue());
-        displayTable.refresh();
+        table.refresh();
     }
 
-    public void rangeSplitCellCommit(TableColumn.CellEditEvent<Weapon, Integer> cellEditEvent) {
-        Weapon wpn = displayTable.getSelectionModel().getSelectedItem();
-        Integer rangeSplitNum = Integer.parseInt(cellEditEvent.getTableColumn().getText().replaceFirst("RangeSplit", ""));
-        if (toggleBatch.isSelected())
-            mainController.getList().batchEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue(), rangeSplitNum);
-        else
-            mainController.getList().singleEdit(wpn, cellEditEvent.getTableColumn().getText(), cellEditEvent.getNewValue(), rangeSplitNum);
-        displayTable.refresh();
-    }
-
-    public TableView<Weapon> getDisplayTable() {
-        return displayTable;
+    public TableView<Weapon> getTable() {
+        return table;
     }
 }

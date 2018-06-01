@@ -35,13 +35,13 @@ public class MainController {
 
     @FXML private Stage mainStage;
 
-    @FXML private WeaponEditorTabController weaponEditorTabController;
+    @FXML private WeaponEditorController weaponEditorController;
 
     @FXML
     private void initialize() {
         prefs = new Prefs();
         list = new WeaponCollection(prefs.getWorkingDir());
-        weaponEditorTabController.postInitSetup(this);
+        weaponEditorController.postInitSetup(this);
         workingDirDisplay.setText(prefs.getWorkingDir());
         populateViewColumnsMenu();
     }
@@ -62,7 +62,8 @@ public class MainController {
             list = new WeaponCollection(dir.getAbsolutePath());
             workingDirDisplay.setText(prefs.getWorkingDir());
         }
-        weaponEditorTabController.populateTable();
+        weaponEditorController.populateTable();
+//        ItemCollection items = new ItemCollection(prefs.getWorkingDir());
     }
 
     public void fileExit(ActionEvent actionEvent) {
@@ -122,12 +123,12 @@ public class MainController {
                 list.restore(file, prefs.getWorkingDir());
         }
         list = new WeaponCollection(prefs.getWorkingDir());
-        weaponEditorTabController.populateTable();
+        weaponEditorController.populateTable();
     }
 
     public void helpAbout(ActionEvent actionEvent) {
         try {
-            Parent aboutRoot = new FXMLLoader(Main.class.getResource("gui/fxml/about.fxml")).load();
+            Parent aboutRoot = new FXMLLoader(Main.class.getResource("gui/fxml/About.fxml")).load();
             Stage stage = new Stage();
             stage.setScene(new Scene(aboutRoot));
             stage.setTitle("About");
@@ -138,7 +139,7 @@ public class MainController {
     }
 
     private void populateViewColumnsMenu() {
-        for (TableColumn column : weaponEditorTabController.getDisplayTable().getColumns()) {
+        for (TableColumn column : weaponEditorController.getTable().getColumns()) {
             CheckBox cb = new CheckBox(column.getText());
             cb.setSelected(column.isVisible());
             cb.setTextFill(Color.BLACK);

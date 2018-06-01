@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- right-click context menu to editor tableview
+- "Open File" option to table context menu
+- ComponentTag selector to table context menu
+
 ## [v0.2.1] - 2018-05-30
 
 ### Added
