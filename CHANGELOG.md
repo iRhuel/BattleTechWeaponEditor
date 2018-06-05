@@ -6,10 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.2] - 2018-06-04
+
 ### Added
 - right-click context menu to editor tableview
 - "Open File" option to table context menu
 - ComponentTag selector to table context menu
+
+### Fixed
+- corrected faulty edit application logic that caused bonus values to reapply with any change to bonus-eligible fields. Should now correctly strip bonus before reapplying.
+- CriticalChanceMultiplier now correctly editable (how did I even break this...?!)
 
 ## [v0.2.1] - 2018-05-30
 

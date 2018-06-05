@@ -222,26 +222,31 @@ public class WeaponCollection {
     public void singleEdit(Weapon wpn, String field, Integer newInt) {
         switch (field) {
             case "Damage":
+                wpn.removeBonuses();
                 wpn.setDamage(newInt);
                 wpn.applyBonuses();
                 break;
 
             case "Instability":
+                wpn.removeBonuses();
                 wpn.setInstability(newInt);
                 wpn.applyBonuses();
                 break;
 
             case "HeatDamage":
+                wpn.removeBonuses();
                 wpn.setHeatDamage(newInt);
                 wpn.applyBonuses();
                 break;
 
             case "AccuracyModifier":
+                wpn.removeBonuses();
                 wpn.setAccuracyModifier(newInt);
                 wpn.applyBonuses();
                 break;
 
             case "HeatGenerated":
+                wpn.removeBonuses();
                 wpn.setHeatGenerated(newInt);
                 wpn.applyBonuses();
                 break;
@@ -322,7 +327,8 @@ public class WeaponCollection {
 
     public void singleEdit(Weapon wpn, String field, Double newDbl) {
         switch (field) {
-            case "CriticalChanceModifier":
+            case "CriticalChanceMultiplier":
+                wpn.removeBonuses();
                 wpn.setCriticalChanceMultiplier(newDbl);
                 wpn.applyBonuses();
 

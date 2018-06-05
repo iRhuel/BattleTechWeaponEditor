@@ -1,5 +1,6 @@
 package com.bwe.pojo.weapon;
 
+import com.bwe.enums.WeaponSubType;
 import com.fasterxml.jackson.annotation.*;
 
 import java.text.DecimalFormat;
@@ -142,6 +143,15 @@ public class Weapon {
     }
 
     @JsonIgnore
+    public void removeBonuses() {
+        for (String subString : bonusValueA.split("\\|"))
+            removeBonus(subString);
+
+        for (String subString : bonusValueB.split("\\|"))
+            removeBonus(subString);
+    }
+
+    @JsonIgnore
     public void adjustBonus(String newBonus, char whichBonus) {
         if (whichBonus == 'A') {
             for (String bonus : bonusValueA.split("\\|"))
@@ -239,31 +249,48 @@ public class Weapon {
     }
 
     @JsonIgnore
-    public String getDmgPerHeat() {
-        if (getDamagePerVolley() == null || heatGenerated == null)
+    public String getDmgPerTon() {
+        if (getDamagePerVolley() == null || tonnage == null || tonnage <= 0)
             return "N/A";
-        return round((double) getDamagePerVolley() / heatGenerated);
+        switch (weaponSubType) {
+            case "AC2":
+            case "AC5":
+            case "SRM2":
+            case "SRM4":
+            case "SRM6":
+            case "LRM5":
+            case "LRM10":
+            case "MachineGun":
+                return round((double)getDamagePerVolley() / (tonnage + 1D));
+            case "AC10":
+            case "AC20":
+            case "Gauss":
+            case "LRM15":
+            case "LRM20":
+                return round((double)getDamagePerVolley() / (tonnage + 2D));
+        }
+        return round((double)getDamagePerVolley() / tonnage);
     }
 
     @JsonIgnore
-    public String getDmgPerTon() {
-        if (getDamagePerVolley() == null || tonnage == null)
+    public String getDmgPerHeat() {
+            if (getDamagePerVolley() == null || heatGenerated == null)
+                return "N/A";
+            return round((double)getDamagePerVolley() / heatGenerated);
+    }
+
+    @JsonIgnore
+    public String getStbPerTon() {
+        if (getInstabilityPerVolley() == null || tonnage == null || tonnage <= 0)
             return "N/A";
-        return round((double) getDamagePerVolley() / tonnage);
+        return round((double)getInstabilityPerVolley() / tonnage);
     }
 
     @JsonIgnore
     public String getStbPerHeat() {
         if (getInstabilityPerVolley() == null || heatGenerated == null)
             return "N/A";
-        return round((double) getInstabilityPerVolley() / heatGenerated);
-    }
-
-    @JsonIgnore
-    public String getStbPerTon() {
-        if (getInstabilityPerVolley() == null || tonnage == null)
-            return "N/A";
-        return round((double) getInstabilityPerVolley() / tonnage);
+        return round((double)getInstabilityPerVolley() / heatGenerated);
     }
 
     @JsonIgnore
