@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.3] - 2018-06-28
+
+### Changed
+- bonus values will now respect operator specified at the beginning of each bonus substring (either '+' or '-'). Note that certain bonus values like Acc. will retain their original behavior (will subtract from value rather than add, even if '+' is specified). This is to maintain parity with vanilla bonus values. For these values, the opposite operator will also have the opposite effect, as expected.
+
 ## [v0.2.2] - 2018-06-04
 
 ### Added

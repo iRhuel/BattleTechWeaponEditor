@@ -174,6 +174,27 @@ public class Weapon {
         if (bonus.equals(""))
             return;
 
+        if (bonus.charAt(0) == '-')
+            subtractBonusValue(bonus);
+
+        else
+            addBonusValue(bonus);
+    }
+
+    @JsonIgnore
+    private void removeBonus(String bonus) {
+        if (bonus.equals(""))
+            return;
+
+        if (bonus.charAt(0) == '-')
+            addBonusValue(bonus);
+
+        else
+            subtractBonusValue(bonus);
+    }
+
+    @JsonIgnore
+    private void addBonusValue(String bonus) {
         if (bonus.contains(" Dmg.")) {
             damage += bonusValue(bonus);
         }
@@ -187,16 +208,14 @@ public class Weapon {
             criticalChanceMultiplier += bonusValue(bonus) / 100D;
         }
         if (bonus.contains(" Heat.")) {
-            heatGenerated -= bonusValue(bonus);
+            heatGenerated += bonusValue(bonus);
         }
         if (bonus.contains(" Dmg. (H)"))
             heatDamage += bonusValue(bonus);
     }
 
-    private void removeBonus(String bonus) {
-        if (bonus.equals(""))
-            return;
-
+    @JsonIgnore
+    private void subtractBonusValue(String bonus) {
         if (bonus.contains(" Dmg.")) {
             damage -= bonusValue(bonus);
         }
@@ -210,7 +229,7 @@ public class Weapon {
             criticalChanceMultiplier -= bonusValue(bonus) / 100D;
         }
         if (bonus.contains(" Heat.")) {
-            heatGenerated += bonusValue(bonus);
+            heatGenerated -= bonusValue(bonus);
         }
         if (bonus.contains(" Dmg. (H)"))
             heatDamage -= bonusValue(bonus);

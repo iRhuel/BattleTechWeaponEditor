@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,5 +57,9 @@ public class ItemCollection {
                 }
             }
         }
+    }
+
+    public ObservableList getObservableFiles() {
+        return FXCollections.observableList(fileArrayList);
     }
 }
