@@ -132,6 +132,10 @@ public class Weapon {
     private ComponentTags componentTags;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonIgnore
+    private String fileName;
+    @JsonIgnore
+    private String filePath;
 
     @JsonIgnore
     public void applyBonuses() {
@@ -353,6 +357,16 @@ public class Weapon {
     }
 
     @JsonIgnore
+    public String getFileName() {
+        return fileName;
+    }
+
+    @JsonIgnore
+    public String getFilePath() {
+        return filePath;
+    }
+
+    @JsonIgnore
     public void setShortRangeSplit(Integer integer) {
         rangeSplit.set(0, integer);
     }
@@ -365,6 +379,16 @@ public class Weapon {
     @JsonIgnore
     public void setLongRangeSplit(Integer integer) {
         rangeSplit.set(2, integer);
+    }
+
+    @JsonIgnore
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @JsonIgnore
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @JsonProperty("Category")

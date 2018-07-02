@@ -14,10 +14,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class WeaponCollection {
+    private String workingDir;
 
     private ObjectMapper mapper;
     private ObjectWriter writer;
@@ -26,22 +30,43 @@ public class WeaponCollection {
     private ArrayList<Weapon> weaponSubList = new ArrayList<>();
 
     public WeaponCollection(String path) {
+        workingDir = path;
         DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
         printer.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
         mapper = new ObjectMapper();
         writer = mapper.writer(printer);
 
-        File[] fileList = new File(path).listFiles();
+        search(new File(workingDir));
+
+        for (File file : fileArrayList) {
+            try {
+                Weapon wpn = mapper.readValue(file, Weapon.class);
+                wpn.setFileName(file.getName());
+                wpn.setFilePath(getRelativeFilePath(workingDir, file.getCanonicalPath()).replace(file.getName(), ""));
+                weaponArrayList.add(wpn);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String getRelativeFilePath(String rootString, String fileString) {
+        return fileString.replace(rootString + "\\", "");
+    }
+
+    /**
+     * Recursively populate fileList with all files in folder and subfolders
+     *
+     * @param baseFile working directory
+     */
+    private void search(File baseFile) {
+        File[] fileList = baseFile.listFiles();
         if (fileList != null) {
             for (File file : fileList) {
-                try {
-                    if (!file.getName().contains("Template") && file.getName().contains("Weapon_")) {
-                        fileArrayList.add(file);
-                        Weapon wpn = mapper.readValue(file, Weapon.class);
-                        weaponArrayList.add(wpn);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (file.isDirectory()) {
+                    search(file);
+                } else if (!file.getName().contains("Template") && file.getName().contains(".json") && file.getName().contains("Weapon_")) {
+                    fileArrayList.add(file);
                 }
             }
         }
@@ -75,6 +100,7 @@ public class WeaponCollection {
             for (int i = 0; i < fileArrayList.size(); i++) {
                 if (!fileArrayList.get(i).getName().contains(weaponArrayList.get(i).getDescription().getId()))
                     throw new FileNotFoundException();
+
                 writer.writeValue(new FileOutputStream(fileArrayList.get(i)), weaponArrayList.get(i));
             }
         } catch (Exception e) {
@@ -83,12 +109,11 @@ public class WeaponCollection {
     }
 
     public void backup(File saveFile) {
-        System.out.println(saveFile.getAbsolutePath());
         JsonNodeFactory factory = JsonNodeFactory.instance;
         ObjectNode parent = factory.objectNode();
         try {
             for (File file : fileArrayList) {
-                parent.set(file.getName(), mapper.readTree(file));
+                parent.set(getRelativeFilePath(workingDir, file.getCanonicalPath()), mapper.readTree(file));
             }
             writer.writeValue(saveFile, parent);
         } catch (Exception e) {
@@ -102,8 +127,21 @@ public class WeaponCollection {
             Iterator<String> iterator = jsonNode.fieldNames();
             while (iterator.hasNext()) {
                 String name = iterator.next();
-                if (jsonNode.get(name) != null)
+                if (jsonNode.get(name) != null) {
+
+                    String[] temp = name.split("\\\\");
+                    StringBuilder dirPath = new StringBuilder(workingDir);
+                    dirPath.append("\\");
+                    for (int i = 0; i < temp.length - 1; i++) {
+                        dirPath.append(temp[i]).append("\\");
+                    }
+
+                    File dir = new File(dirPath.toString());
+                    if (!dir.exists())
+                        dir.mkdirs();
+
                     writer.writeValue(new File(workingDir + "\\" + name), jsonNode.get(name));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

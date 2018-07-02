@@ -45,6 +45,10 @@ public class WeaponEditorController {
     @FXML
     private TableView<Weapon> table;
     @FXML
+    private TableColumn<Weapon, String> colFilePath;
+    @FXML
+    private TableColumn<Weapon, String> colFileName;
+    @FXML
     private TableColumn<Weapon, String> colName;
     @FXML
     private TableColumn<Weapon, String> colCat;
@@ -171,6 +175,7 @@ public class WeaponEditorController {
         setTableListeners();
         setTableContextMenu();
         populateTable();
+        colFilePath.setStyle("-fx-text-overrun: center-ellipsis ");
     }
 
     private void setCellValueFactories() {

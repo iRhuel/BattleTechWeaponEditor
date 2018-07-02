@@ -26,6 +26,8 @@
     <TableView fx:id="table" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
+            <TableColumn text="FilePath" fx:id="colFilePath"/>
+            <TableColumn text="FileName" fx:id="colFileName"/>
             <TableColumn onEditCommit="#strCellCommit" text="Name" fx:id="colName"/>
             <TableColumn onEditCommit="#strCellCommit" text="Category" fx:id="colCat"/>
             <TableColumn onEditCommit="#strCellCommit" text="Type" fx:id="colType"/>

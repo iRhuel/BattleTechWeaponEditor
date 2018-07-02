@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.4] - 2018-07-01
+
+### Added
+- file path column to track files across multiple directories
+- file name column
+
+### Changed
+- program will now recursively search subfolders within working directory for valid weapon .json files and add them to its working file list
+    - it's recommended to NOT edit the game's weapon.json files directly, but instead use override files with ModTek (more info on ModTek and be found [here](https://github.com/Mpstark/ModTek))
+    - because of this, it's recommended that you point BWE to your "/BATTLETECH/Mods" folder, and edit overrides this way
+- backup function will now also store relative filepath of back up files (relative to working directory at time of creation) 
+    - restoring from a backup file created before this update will dump the old files DIRECTLY into the working directory 
+    - restoring a backup file to a new location will replicate its directory structure in that new location
+
 ## [v0.2.3] - 2018-06-28
 
 ### Changed
